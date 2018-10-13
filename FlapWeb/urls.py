@@ -20,4 +20,5 @@ from LoadData import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('monkey/', views.leer),
+    path('', views.index),
 ]
