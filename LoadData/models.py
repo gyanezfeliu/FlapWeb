@@ -1,15 +1,33 @@
 from django.db import models
 
 # Create your models here.
-class Alumno(models.Model):
-    nombre = models.CharField(max_length=35)
-    apellido = models.CharField(max_length=35)
-    #FechaNac = models.DateField()
-    edad = models.PositiveSmallIntegerField()
+class Experiment(models.Model):
+    name = models.TextField()
+    machine = models.TextField()
 
-    def NombreCompleto(self):
-        nom = "{0}, {1}"
-        return nom.format(self.apellido, self.nombre)
+class Sample(models.Model):
+    #experiment_id = models.IntegerField()
+    experiment_id = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    row = models.IntegerField()
+    col = models.IntegerField()
+    media = models.TextField()
+    strain = models.TextField()
+    IPTG = models.FloatField()
+    aTc = models.FloatField()
 
-    def __str__(self):
-        return self.NombreCompleto()
+class Dna(models.Model):
+    name = models.TextField()
+    sequence = models.TextField()
+
+class Construct(models.Model):
+    dna_id = models.ForeignKey(Dna, on_delete=models.CASCADE)
+
+class Vector(models.Model):
+    dna_id = models.ForeignKey(Dna, on_delete=models.CASCADE)
+    sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
+
+class Measurement(models.Model):
+    name = models.TextField()
+    value = models.FloatField()
+    time = models.FloatField()
+    sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)

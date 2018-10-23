@@ -1,4 +1,9 @@
-from .models import Alumno
+from .models import Experiment
+from .models import Sample
+from .models import Dna
+from .models import Construct
+from .models import Vector
+from .models import Measurement
 import csv
 
 #Leo el archivo y saco la información del archivo
