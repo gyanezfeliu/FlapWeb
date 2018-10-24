@@ -13,7 +13,7 @@
 <body>
   <div class="container">
     <div class="jumbotron mt-4">
-      <h1>Felicidades, ya estás en FlapWeb!!!</h1>
+      <h1>Welcome to FlapWeb!!!</h1>
       <button type="button" name="button" id="crea" class="btn btn-primary">Crear Registro</button>
     </div>
   </div>
@@ -31,9 +31,9 @@
         $.getJSON('/monkey', function(data){
           console.log("Vuelve de crear en BD", data);
           if(data.status=="ok"){
-            alert("Creo el registro");
+            alert("Record created");
           }else{
-            alert("No creo el registro");
+            alert("Record not created");
           }
         })
       })

@@ -11,7 +11,7 @@ from .models import Measurement
 from . import file_reader as fr
 # Create your views here.
 def leer(request):
-    fr.MonkeyReader.cargarBase()
+    fr.MonkeyReader.loadSynergy()
     data = json.dumps({'status': 'ok'})
 
     return HttpResponse(data, content_type='application/json')

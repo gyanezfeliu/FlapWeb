@@ -10,7 +10,7 @@ import csv
 # Asumiré que ya lo hice
 class MonkeyReader():
 
-    def cargarBase():
+    def loadSynergy():
         name = 'pepito'
         last = 'los palotes'
         age = 32
