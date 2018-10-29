@@ -5,6 +5,7 @@ RUN apt-get update -qq && apt-get install -y nodejs
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get -y update && apt-get -y install yarn postgresql-client
+RUN mkdir -p /var/app/uploads
 RUN mkdir -p /var/app/flap
 WORKDIR /var/app/flap
 COPY . .
