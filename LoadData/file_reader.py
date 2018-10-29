@@ -14,5 +14,3 @@ class MonkeyReader():
         name = 'pepito'
         last = 'los palotes'
         age = 32
-        a1 = Alumno(nombre = name, apellido = last, edad = age)
-        a1.save()
