@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'registry',
         'USER': 'guillermo',
         'PASSWORD': '123456',
-        'HOST': '127.0.0.1',
+        'HOST': 'pg_flap',
         'PORT': '5432',
     }
 }
