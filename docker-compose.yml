@@ -13,7 +13,7 @@ services:
       - 8000:8000
     environment:
       FLAP_DATABASE_HOST: pg_flap
-      FLAP_DATABASE_PORT: 5432
+      FLAP_DATABASE_PORT: 5430
       FLAP_DATABASE_USERNAME: guillermo
       FLAP_DATABASE_PASSWORD: 123456
 
@@ -26,7 +26,7 @@ services:
     image: postgres:10.5
     restart: always
     ports:
-      - 5432:5432
+      - 5430:5430
     environment:
       POSTGRES_USER: guillermo
       POSTGRES_PASSWORD: 123456
