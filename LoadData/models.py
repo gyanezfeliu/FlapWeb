@@ -6,7 +6,6 @@ class Experiment(models.Model):
     machine = models.TextField()
 
 class Sample(models.Model):
-    #experiment_id = models.IntegerField()
     experiment_id = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     row = models.IntegerField()
     col = models.IntegerField()
@@ -29,5 +28,5 @@ class Vector(models.Model):
 class Measurement(models.Model):
     name = models.TextField()
     value = models.FloatField()
-    time = models.FloatField()
+    time = models.TimeField()
     sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
