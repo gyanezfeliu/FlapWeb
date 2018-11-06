@@ -26,10 +26,12 @@ def leer(request):
     fr.MonkeyReader.loadSynergy(request.POST['dataFull'], request.FILES['dataFile'].name)
     return HttpResponse(data, content_type='application/json')
 
-def index(request):
-    return render(request, 'index.html', {})
-
 def handle_uploaded_file(f):
     with open('../uploads/' + f.name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+def index(request):
+    return render(request, 'index.html', {})
+    
+def search(request):
+    return render(request, 'plotly.html', {})
