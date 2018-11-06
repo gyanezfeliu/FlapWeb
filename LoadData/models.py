@@ -7,7 +7,7 @@ class Experiment(models.Model):
 
 class Sample(models.Model):
     experiment_id = models.ForeignKey(Experiment, on_delete=models.CASCADE)
-    row = models.IntegerField()
+    row = models.TextField()
     col = models.IntegerField()
     media = models.TextField()
     strain = models.TextField()

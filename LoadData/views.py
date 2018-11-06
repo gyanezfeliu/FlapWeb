@@ -12,10 +12,8 @@ from . import file_reader as fr
 
 from .forms import UploadFileForm
 
-
-# Create your views here.
 def leer(request):
-    fr.MonkeyReader.loadSynergy()
+
     form = UploadFileForm(request.POST, request.FILES)
     upload = handle_uploaded_file(request.FILES['dataFile'])
 
@@ -25,11 +23,11 @@ def leer(request):
     'posts': request.POST
     })
 
+    fr.MonkeyReader.loadSynergy(request.POST['dataFull'], request.FILES['dataFile'].name)
     return HttpResponse(data, content_type='application/json')
 
 def index(request):
     return render(request, 'index.html', {})
-
 
 def handle_uploaded_file(f):
     with open('../uploads/' + f.name, 'wb+') as destination:
