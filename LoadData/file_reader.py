@@ -1,3 +1,6 @@
+# File reader reads and loads the data into the DB
+# Method loadSynerty is called from views.leer and 
+
 # Models
 from .models import Experiment
 from .models import Sample

@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('monkey/sample', views.leer),
     path('monkey/search', views.search),
+    path('monkey/plot', views.plot),
     path('', views.index),
     #url(r'^api-auth/', include('rest_framework.urls')),
 ]
