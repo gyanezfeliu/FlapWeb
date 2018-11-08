@@ -19,7 +19,7 @@ services:
 
     volumes:
       - .:/var/app/flap
-    command: gunicorn -b :8000 FlapWeb.wsgi
+    command: gunicorn --reload -b :8000 FlapWeb.wsgi
 
   pg_flap:
     container_name: pg_flap
