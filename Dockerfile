@@ -11,5 +11,6 @@ WORKDIR /var/app/flap
 COPY . .
 EXPOSE 8000
 RUN easy_install pip
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 CMD gunicorn -b :8000 FlapWeb.wsgi

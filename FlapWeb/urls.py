@@ -15,13 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 from LoadData import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('monkey/sample', views.leer),
     path('monkey/search', views.search),
-    path('monkey/plot', views.plot),
+    path('monkey/plots/<int:id>', views.plots),
     path('', views.index),
     #url(r'^api-auth/', include('rest_framework.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
