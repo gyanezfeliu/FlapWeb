@@ -1,5 +1,5 @@
 # Models
-from LoadData.models import Experiment, Sample, Dna, Construct, Vector, Measurement, LoadProcess
+from LoadData.models import Experiment, Sample, Dna, Construct, Vector, Measurement
 # Data handling
 import pandas as pd
 import numpy as np
@@ -72,6 +72,11 @@ def run(*args):
     df_CFP.index = range(97)
 
     df_OD = df_OD.drop([96])
+    df_RFP = df_RFP.drop([96])
+    df_YFP = df_YFP.drop([96])
+    df_CFP = df_CFP.drop([96])
+
+    dfs = [df_OD, df_RFP, df_YFP, df_CFP]
 
     # 1) Experiment
     e = Experiment(name=experiment_name, machine=machine_name)
@@ -104,10 +109,11 @@ def run(*args):
 
         # 4) Measurement
         # name, value, time
-        for i, value in enumerate(df_OD[col_name]):
-            nam = df_OD['name'].iloc[i]
-            val = value
-            t = df_OD['Time'].iloc[i]
+        for df in dfs:
+            for i, value in enumerate(df[col_name]):
+                nam = df['name'].iloc[i]
+                val = value
+                t = df['Time'].iloc[i]
 
-            m = Measurement(name=nam, value=val, time=t, sample_id=s)
-            m.save()
+                m = Measurement(name=nam, value=val, time=t, sample_id=s)
+                m.save()
