@@ -12,8 +12,13 @@ import subprocess
 
 #print(sys.argv)
 def run(*args):
+
+    id_data = int(args[0])
+    metadata = LoadProcess.objects.get(id=id_data).content
+    file_route = LoadProcess.objects.get(id=id_data).file
+
     # Cargo Metadata
-    file_route = '../uploads/' + file_name
+
     #data_str = open(metadata).read()
     data = json.loads(metadata)
     df_json = pd.DataFrame(data)
