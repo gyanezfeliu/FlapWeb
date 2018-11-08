@@ -22,26 +22,17 @@ def leer(request):
     fr.MonkeyReader.loadSynergy(request.POST['dataFull'], request.FILES['dataFile'].name)
     return HttpResponse(data, content_type='application/json')
 
-def plot(request):
-    # Definir el método de búsqueda: tomar los valores entregados en el request
-    # Luego hacer la query y
-    pass
-    """
-    # Para probar que responde"
-    data = json.dumps({
-    'status': 'Ok',
-    'posts': request.POST
-    })
-    return HttpResponse(data, content_type='application/json')
-    """
-    json_to_plot = sch.make_search(['', '', '', ''])
-
 def handle_uploaded_file(f):
     with open('../uploads/' + f.name, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+
 def index(request):
     return render(request, 'index.html', {})
 
 def search(request):
     return render(request, 'search.html', {})
+
+
+def plots(request, id=0):
+    return render(request, 'plots.html', {})
