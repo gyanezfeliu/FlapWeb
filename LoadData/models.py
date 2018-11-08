@@ -30,3 +30,7 @@ class Measurement(models.Model):
     value = models.FloatField()
     time = models.TimeField()
     sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
+
+class LoadProcess(models.Model):
+    content = models.TextField()
+    file = models.TextField()

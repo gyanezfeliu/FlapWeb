@@ -1,13 +1,8 @@
 # File reader reads and loads the data into the DB
-# Method loadSynerty is called from views.leer and 
+# Method loadSynerty is called from views.leer and
 
 # Models
-from .models import Experiment
-from .models import Sample
-from .models import Dna
-from .models import Construct
-from .models import Vector
-from .models import Measurement
+from .models import Experiment, Sample, Dna, Construct, Vector, Measurement, LoadProcess
 
 # Data handling
 import pandas as pd
@@ -17,6 +12,7 @@ import os
 import openpyxl as opxl
 from itertools import islice
 import csv
+import subprocess
 
 #Leo el archivo y saco la información del archivo
 # Asumiré que ya lo hice
@@ -24,6 +20,12 @@ class MonkeyReader():
 
     def loadSynergy(metadata, file_name):
 
+        lp = LoadProcess(content=metadata, file=file_name)
+        lp.save()
+
+        p = subprocess.Popen(['python', 'manage.py', 'runscript', 'load_DB', '--script-args', str(lp.id)], stdout=subprocess.PIPE)
+
+        """
         # Cargo Metadata
         file_route = '../uploads/' + file_name
         #data_str = open(metadata).read()
@@ -106,6 +108,9 @@ class MonkeyReader():
             d = Dna(name=DNA_name, sequence='AATG')
             d.save()
 
+            v = Vector(dna_id=d, sample_id=s)
+            v.save()
+
             # 4) Measurement
             # name, value, time
             for i, value in enumerate(df_OD[col_name]):
@@ -115,3 +120,4 @@ class MonkeyReader():
 
                 m = Measurement(name=nam, value=val, time=t, sample_id=s)
                 m.save()
+            """

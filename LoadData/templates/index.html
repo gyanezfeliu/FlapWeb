@@ -22,8 +22,8 @@
     <div class="table-responsive" id="blkData">
 
       <nav aria-label="...">
-        Pasos:
-        <ul class="pagination" id="pasos">
+        Steps:
+        <ul class="pagination" id="steps">
           <li class="page-item disabled">
             <a class="page-link bg-primary text-white" href="#" tabindex="-1">Strain</a>
           </li>
@@ -204,15 +204,15 @@
     $("#btnNext").on("click", ()=>{
       switch (data.length) {
         case 0:
-        $("#pasos li a:nth(0), #pasos li a:nth(1)").toggleClass("bg-primary text-white text-black")
+        $("#steps li a:nth(0), #steps li a:nth(1)").toggleClass("bg-primary text-white text-black")
 
         break;
         case 1:
-        $("#pasos li a:nth(1), #pasos li a:nth(2)").toggleClass("bg-primary text-white text-black")
+        $("#steps li a:nth(1), #steps li a:nth(2)").toggleClass("bg-primary text-white text-black")
 
         break;
         case 2:
-        $("#pasos li a:nth(2)").toggleClass("bg-primary text-white text-black")
+        $("#steps li a:nth(2)").toggleClass("bg-primary text-white text-black")
         $("#btnNext").data({action: 'upload'}).text("Subir Archivo")
         $("#blkData").slideUp(()=>{
           $("#blkFile input[name='dataFull']").val(JSON.stringify(data))
@@ -221,7 +221,7 @@
 
         break;
         case 3:
-        $("#pasos li a:nth(2)").toggleClass("bg-primary text-white text-black")
+        $("#steps li a:nth(2)").toggleClass("bg-primary text-white text-black")
 
         break;
         default:

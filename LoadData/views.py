@@ -2,13 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import json
 
-from .models import Experiment
-from .models import Sample
-from .models import Dna
-from .models import Construct
-from .models import Vector
-from .models import Measurement
+from .models import Experiment, Sample, Dna, Construct, Vector, Measurement
 from . import file_reader as fr
+from . import search as sch
 
 from .forms import UploadFileForm
 
@@ -29,11 +25,16 @@ def leer(request):
 def plot(request):
     # Definir el método de búsqueda: tomar los valores entregados en el request
     # Luego hacer la query y
+    pass
+    """
+    # Para probar que responde"
     data = json.dumps({
     'status': 'Ok',
     'posts': request.POST
     })
     return HttpResponse(data, content_type='application/json')
+    """
+    json_to_plot = sch.make_search(['', '', '', ''])
 
 def handle_uploaded_file(f):
     with open('../uploads/' + f.name, 'wb+') as destination:
