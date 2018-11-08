@@ -19,11 +19,11 @@ import subprocess
 class MonkeyReader():
 
     def loadSynergy(metadata, file_name):
-
-        lp = LoadProcess(content=metadata, file=file_name)
+        file_route= '../uploads/'+file_name
+        lp = LoadProcess(content=metadata, file=file_route)
         lp.save()
 
-        p = subprocess.Popen(['python', 'manage.py', 'runscript', 'load_DB', '--script-args', str(lp.id)], stdout=subprocess.PIPE)
+        subprocess.Popen(['python', 'manage.py', 'runscript', 'load_DB', '--script-args', str(lp.id)], stdout=subprocess.PIPE)
 
         """
         # Cargo Metadata
