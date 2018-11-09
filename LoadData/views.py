@@ -33,6 +33,8 @@ def index(request):
 def search(request):
     return render(request, 'search.html', {})
 
-
 def plots(request, id=0):
     return render(request, 'plots.html', {})
+
+def home(request):
+    return render(request, 'home.html', {})
