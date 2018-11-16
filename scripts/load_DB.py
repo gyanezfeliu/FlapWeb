@@ -1,5 +1,5 @@
 # Models
-from LoadData.models import Experiment, Sample, Dna, Construct, Vector, Measurement
+from LoadData.models import Experiment, Sample, Dna, Vector, Measurement, Inducer
 # Data handling
 import pandas as pd
 import numpy as np

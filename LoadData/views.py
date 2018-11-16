@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import json
 
-from .models import Experiment, Sample, Dna, Construct, Vector, Measurement
+from .models import Experiment, Sample, Dna, Vector, Measurement, Inducer
 from . import file_reader as fr
 from . import search as sch
 

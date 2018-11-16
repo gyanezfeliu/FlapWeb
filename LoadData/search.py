@@ -1,6 +1,6 @@
 from django_pandas.io import read_frame
 
-from .models import Experiment, Sample, Dna, Construct, Vector, Measurement
+from .models import Experiment, Sample, Dna, Vector, Measurement, Inducer
 
 def make_search(params):
     qs = Measurement.objects.filter(name='OD', sample_id=156)

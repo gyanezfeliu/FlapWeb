@@ -11,25 +11,25 @@ class Sample(models.Model):
     col = models.IntegerField()
     media = models.TextField()
     strain = models.TextField()
-    IPTG = models.FloatField()
-    aTc = models.FloatField()
 
 class Dna(models.Model):
     name = models.TextField()
-    sequence = models.TextField()
-
-class Construct(models.Model):
-    dna_id = models.ForeignKey(Dna, on_delete=models.CASCADE)
+    sboluri = models.TextField()
 
 class Vector(models.Model):
     dna_id = models.ForeignKey(Dna, on_delete=models.CASCADE)
     sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
 
 class Measurement(models.Model):
+    sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
     name = models.TextField()
     value = models.FloatField()
-    time = models.TimeField()
+    time = models.FloatField()
+
+class Inducer(models.Model):
     sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
+    concentration = models.FloatField()
+    puchemid = models.TextField()
 
 class LoadProcess(models.Model):
     content = models.TextField()
