@@ -1,5 +1,5 @@
 # Models
-from LoadData.models import Experiment, Sample, Dna, Vector, Measurement, Inducer
+from LoadData.models import Experiment, Sample, Dna, Vector, Measurement, Inducer, LoadProcess
 # Data handling
 import pandas as pd
 import numpy as np
@@ -97,11 +97,11 @@ def run(*args):
         st = col_serie['Strain']['value']
         med = col_serie['Media']['value']
 
-        s = Sample(experiment_id=e, row=plate_row, col=plate_col, media=med, strain=st, IPTG=0, aTc=0)
+        s = Sample(experiment_id=e, row=plate_row, col=plate_col, media=med, strain=st)
         s.save()
 
         DNA_name = col_serie['DNA']['value']
-        d = Dna(name=DNA_name, sequence='AATG')
+        d = Dna(name=DNA_name, sboluri='')
         d.save()
 
         v = Vector(dna_id=d, sample_id=s)
@@ -113,7 +113,7 @@ def run(*args):
             for i, value in enumerate(df[col_name]):
                 nam = df['name'].iloc[i]
                 val = value
-                t = df['Time'].iloc[i]
-
+                #t = df['Time'].iloc[i]
+                t = i
                 m = Measurement(name=nam, value=val, time=t, sample_id=s)
                 m.save()

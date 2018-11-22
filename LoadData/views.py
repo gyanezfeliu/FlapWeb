@@ -22,6 +22,11 @@ def leer(request):
     fr.MonkeyReader.loadSynergy(request.POST['dataFull'], request.FILES['dataFile'].name)
     return HttpResponse(data, content_type='application/json')
 
+def massUpload(request):
+    fr.MonkeyReader.massUpload()
+    data = json.dumps({'Status': "Your data is being loaded"})
+    return HttpResponse(data, content_type='application/json')
+
 def handle_uploaded_file(f):
     with open('../uploads/' + f.name, 'wb+') as destination:
         for chunk in f.chunks():

@@ -24,3 +24,6 @@ class MonkeyReader():
         lp = LoadProcess(content=metadata, file=file_route)
         lp.save()
         subprocess.Popen(['python', 'manage.py', 'runscript', 'load_DB', '--script-args', str(lp.id)], stdout=subprocess.PIPE)
+
+    def massUpload():
+        subprocess.Popen(['python', 'manage.py', 'runscript', 'massiveUpload'], stdout=subprocess.PIPE)
