@@ -4,32 +4,47 @@ from django.db import models
 class Experiment(models.Model):
     name = models.TextField()
     machine = models.TextField()
+    #  This is used to add Experiments through the shell
+    def __str__(self):
+        return self.name
 
 class Sample(models.Model):
-    experiment_id = models.ForeignKey(Experiment, on_delete=models.CASCADE)
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     row = models.TextField()
     col = models.IntegerField()
     media = models.TextField()
     strain = models.TextField()
 
+    def __str__(self):
+        return ("Row: {}, Col: {}".format(self.row, self.col))
+
 class Dna(models.Model):
     name = models.TextField()
     sboluri = models.TextField()
 
+    def __str__(self):
+        return self.name
+
 class Vector(models.Model):
-    dna_id = models.ForeignKey(Dna, on_delete=models.CASCADE)
-    sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
+    dna = models.ForeignKey(Dna, on_delete=models.CASCADE)
+    sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
 
 class Measurement(models.Model):
-    sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
+    sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
     name = models.TextField()
     value = models.FloatField()
     time = models.FloatField()
 
+    def __str__(self):
+        return self.name
+
 class Inducer(models.Model):
-    sample_id = models.ForeignKey(Sample, on_delete=models.CASCADE)
+    sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
     concentration = models.FloatField()
-    puchemid = models.TextField()
+    pubchemid = models.TextField()
+
+    def __self__(self):
+        return self.pubchemib
 
 class LoadProcess(models.Model):
     content = models.TextField()

@@ -17,20 +17,49 @@
     </div>
 
     <div id="schFile" class="container">
-      <!--<form action="monkey/plots/1" method="post"> -->
-      <form action="plots/1" method="get">
+
+      <!-- <form action="plots/1" method="get">
         {% csrf_token %}
         Measurement<br>
-        <input type="text" name="measurement_name"><br>
+        <input type="text" name="mea_name"><br>
         Strain<br>
-        <input type="text" name="strain_name"><br>
+        <input type="text" name="str_name"><br>
         Media<br>
-        <input type="text" name="Media_name"><br>
+        <input type="text" name="med_name"><br>
         DNA<br>
-        <input type="text" name="DNA_name"><br>
+        <input type="text" name="dna_name"><br>
+        <button id="subQuery" type="submit" name="button">Submit</button>
+      </form> -->
 
-        <input type="submit" value="Submit">
-      </form>
+      Measurement<br>
+      <input type="text" name="mea_name"><br>
+      Strain<br>
+      <input type="text" name="str_name"><br>
+      Media<br>
+      <input type="text" name="med_name"><br>
+      DNA<br>
+      <input type="text" name="dna_name"><br>
+      <button id="subQuery" type="submit" name="button">Submit</button>
+
     </div>
+
+    <!-- HACER UN DIV PARA LOS INPUTS Y OTRO PARA EL FORM -->
+
+    <script>
+
+      $ = jQuery.noConflict();
+
+      $(document).ready(function() {
+
+        let data = []
+        $("#subQuery").click(function(event) {
+          data.push( $("#schFile input").serializeArray() )
+
+        // HACER AJAX POST para enviar
+
+        });
+      });
+    </script>
+
   </body>
 </html>

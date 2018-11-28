@@ -92,21 +92,27 @@ def run(*args):
     # Empiezo a recorrer los platillos que están en df_json: indexes: strain, media, dna:
     for col_name, col_serie in df_json.iteritems():
         # experiment_id
+        existing_dna = [i.name for i in Dna.objects.all()]
+
         plate_row = col_name[0]
         plate_col = col_name[1:]
         st = col_serie['Strain']['value']
         med = col_serie['Media']['value']
 
-        s = Sample(experiment_id=e, row=plate_row, col=plate_col, media=med, strain=st)
+        s = Sample(experiment=e, row=plate_row, col=plate_col, media=med, strain=st)
         s.save()
 
         DNA_name = col_serie['DNA']['value']
-        d = Dna(name=DNA_name, sboluri='')
-        d.save()
-
-        v = Vector(dna_id=d, sample_id=s)
-        v.save()
-
+        if DNA_name != 'None':
+            if DNA_name not in existing_dna:
+                d = Dna(name=DNA_name, sboluri='')
+                d.save()
+                v = Vector(dna=d, sample=s)
+                v.save()
+            else:
+                d = Dna.objects.filter(name__exact=DNA_name)[0]
+                v = Vector(dna=d, sample=s)
+                v.save()
         # 4) Measurement
         # name, value, time
         for df in dfs:
@@ -115,5 +121,5 @@ def run(*args):
                 val = value
                 #t = df['Time'].iloc[i]
                 t = i
-                m = Measurement(name=nam, value=val, time=t, sample_id=s)
+                m = Measurement(sample=s, name=nam, value=val, time=t)
                 m.save()
