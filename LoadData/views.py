@@ -38,6 +38,13 @@ def index(request):
 def search(request):
     return render(request, 'search.html', {})
 
+def searchRes(request):
+    data = json.dumps({
+    'status': 'Ok',
+    'posts': request.POST
+    })
+    return HttpResponse(data, content_type='application/json')
+    
 def plots(request, id=0):
     return render(request, 'plots.html', {})
 

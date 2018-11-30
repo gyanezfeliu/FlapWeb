@@ -4,7 +4,7 @@ from django.db import models
 class Experiment(models.Model):
     name = models.TextField()
     machine = models.TextField()
-    #  This is used to add Experiments through the shell
+    
     def __str__(self):
         return self.name
 

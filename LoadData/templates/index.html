@@ -173,7 +173,9 @@
           </tr>
         </tbody>
       </table>
+
       <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Siguiente</button>
+
     </div>
 
     <div id="blkFile" class="d-none">
@@ -199,10 +201,10 @@
     let data = []
 
     $("#tblData input").each((idx, item)=>{item.name='data'})
-
     $("#btnNext").on("click", ()=>{
       switch (data.length) {
         case 0:
+        // cambia del 0 al 1 con toggleClass. Los parámetros del toggle son al 0 y 1 le quita las clases que tiene y le agrega las que no tiene.
         $("#steps li a:nth(0), #steps li a:nth(1)").toggleClass("bg-primary text-white text-black")
 
         break;
@@ -211,14 +213,20 @@
 
         break;
         case 2:
+        // Sobre ese elemento aplica las clases
         $("#steps li a:nth(2)").toggleClass("bg-primary text-white text-black")
+        // DEBERIA NO ESTAR FUNCIONANDO. QUITAR
         $("#btnNext").data({action: 'upload'}).text("Subir Archivo")
+        // Hace desaparecer el elemento dentro del selector
         $("#blkData").slideUp(()=>{
+          // Al elemento input con name 'dataFull' le asigno los datos que fueron guardados en data
           $("#blkFile input[name='dataFull']").val(JSON.stringify(data))
+          // Quito la clase para que se muestre
           $("#blkFile").removeClass("d-none")
         });
 
         break;
+        // CASE 3 SE USABA CUANDO SE LE CAMBIABA NOMBRE AL BOTON. QUITAR
         case 3:
         $("#steps li a:nth(2)").toggleClass("bg-primary text-white text-black")
 

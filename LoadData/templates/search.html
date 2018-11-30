@@ -12,13 +12,15 @@
   </head>
   <body>
     <div class="container">
-      <!--<div id="results" style="width:90%; height:400px"></div> -->
       <h1>Start your search</h1>
     </div>
 
     <div id="schFile" class="container">
 
-      <!-- <form action="plots/1" method="get">
+      <!-- ESTE ES EL DE PRUEBA
+      <form action="plots/1" method="get"> -->
+
+      <form action="searchre" method="post">
         {% csrf_token %}
         Measurement<br>
         <input type="text" name="mea_name"><br>
@@ -29,21 +31,8 @@
         DNA<br>
         <input type="text" name="dna_name"><br>
         <button id="subQuery" type="submit" name="button">Submit</button>
-      </form> -->
-
-      Measurement<br>
-      <input type="text" name="mea_name"><br>
-      Strain<br>
-      <input type="text" name="str_name"><br>
-      Media<br>
-      <input type="text" name="med_name"><br>
-      DNA<br>
-      <input type="text" name="dna_name"><br>
-      <button id="subQuery" type="submit" name="button">Submit</button>
-
+      </form>
     </div>
-
-    <!-- HACER UN DIV PARA LOS INPUTS Y OTRO PARA EL FORM -->
 
     <script>
 
@@ -54,7 +43,7 @@
         let data = []
         $("#subQuery").click(function(event) {
           data.push( $("#schFile input").serializeArray() )
-
+          console.log(data)
         // HACER AJAX POST para enviar
 
         });

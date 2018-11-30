@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('monkey/sample', views.leer),
     path('monkey/search', views.search),
+    path('monkey/searchre', views.searchRes),
     path('monkey/plots/<int:id>', views.plots),
     path('monkey/upload', views.index),
     path('monkey/massupload', views.massUpload),
