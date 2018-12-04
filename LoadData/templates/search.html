@@ -23,14 +23,18 @@
       <form action="searchre" method="post">
         {% csrf_token %}
         Measurement<br>
-        <input type="text" name="mea_name"><br>
+        <input type="text" name="mea_name" placeholder=""><br>
         Strain<br>
         <input type="text" name="str_name"><br>
         Media<br>
         <input type="text" name="med_name"><br>
         DNA<br>
         <input type="text" name="dna_name"><br>
-        <button id="subQuery" type="submit" name="button">Submit</button>
+
+        <!-- COMO HAGO CON EL FORM SI MI OPCION DEPENDE DEL BOTON QUE SE APRETE? -->
+
+        <button id="subQuery" type="submit" name="button">Plot</button>
+        <button id="subQuery" type="submit" name="button">Analyse</button>
       </form>
     </div>
 

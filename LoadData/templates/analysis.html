@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <div class="container">
+      <h3>Select your analysis</h3>
+      <form id="analysis_form" class="" action="" method="post">
+        <input id="indcur" type="radio" name="analysis" value="ind_curve">
+        <label for="indcur">Induction curve</label><br>
+
+        <input id="heatmap" type="radio" name="analysis" value="heatmap">
+        <label for="heatmap">Heatmap</label><br>
+
+        <input id="kym" type="radio" name="analysis" value="kymograph">
+        <label for="kym">Kymograph</label><br>
+
+      </form>
+
+      <form id="ind_form" class="d-none" action="" method="">
+        <h5>Choose the function for the induction curve</h5>
+        <input id="ratrho" type="radio" name="induction" value="rat_rho">
+        <label for="ratrho">Ratiometric rho</label><br>
+
+        <input id="meanexp" type="radio" name="induction" value="mean_exp">
+        <label for="meanexp">Kymograph</label><br>
+      </form>
+
+      <form id="heat_form" class="d-none" action="" method="">
+        <h5>Heatmap parameters</h5>
+        Parameter 1
+        <input type="text" name="" value=""><br>
+        Parameter 2
+        <input type="text" name="" value=""><br>
+        Parameter 3
+        <input type="text" name="" value=""><br>
+      </form>
+
+      <form id="kym_form" class="d-none" action="" method="">
+        <h5>Kymograph parameters</h5>
+        Parameter 1
+        <input type="text" name="" value=""><br>
+        Parameter 2
+        <input type="text" name="" value=""><br>
+        Parameter 3
+        <input type="text" name="" value=""><br>
+      </form>
+
+      <br>
+      <input id="analyse" type="submit" name="" value="Analyse"><br>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script>
+    $ = jQuery.noConflict();
+
+    $(document).ready(function() {
+
+      $("#analysis_form input[id='indcur']").on("click", () =>{
+        $("#ind_form").removeClass("d-none");
+        $("#heat_form").addClass("d-none")
+        $("#kym_form").addClass("d-none")
+      })
+
+      $("#analysis_form input[id='heatmap']").on("click", () =>{
+        $("#ind_form").addClass("d-none");
+        $("#heat_form").removeClass("d-none")
+        $("#kym_form").addClass("d-none")
+      })
+
+      $("#analysis_form input[id='kym']").on("click", () =>{
+        $("#ind_form").addClass("d-none");
+        $("#heat_form").addClass("d-none")
+        $("#kym_form").removeClass("d-none")
+      })
+    })
+
+      $("#analyse").on("click", () => {
+        if($("#indcur").is(':checked')) {
+          // Extraer los parámetros del análisis
+          console.log("indcur activado")
+        } else if ($("#heatmap").is(':checked')) {
+          // Extraer los parámetros del análisis
+          console.log("heatmap activado")
+        } else if ($("#kym").is(':checked')) {
+          // Extraer los parámetros del análisis
+          console.log("kym activado")
+        } else {
+          alert("You must select an analysis option")
+        }
+      })
+    </script>
+
+
+  </body>
+</html>

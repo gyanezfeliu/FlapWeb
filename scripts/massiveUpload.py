@@ -251,5 +251,5 @@ def load_from_file(route, file_format, columns, medidas):
 columns = [x+str(y) for x in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] for y in range(1,13)]
 medidas = ['OD600:600', 'RFP-YFP:585/10,620/15', 'RFP-YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
 
-load_from_file('scripts/datafiles/bmg/to_upload/', 'bmg', columns, medidas)
-load_from_file('scripts/datafiles/synergy/to_upload/', 'synergy', columns, medidas)
+load_from_file('uploads/datafiles/bmg/to_upload/', 'bmg', columns, medidas)
+load_from_file('uploads/datafiles/synergy/to_upload/', 'synergy', columns, medidas)
