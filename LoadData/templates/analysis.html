@@ -38,7 +38,7 @@
       </form>
 
       <!-- Ratiometric rho form -->
-      <form id="rat_rho_form" class="d-none" action="" method="">
+      <form id="ind_rat_rho_form" class="d-none" action="" method="">
         <h5>Ratiometric rho parameters</h5>
         Gompertz min and max values <br>
         Min
@@ -67,7 +67,7 @@
       </form>
 
       <!-- Ratiometric alpha form -->
-      <form id="rat_alpha_form" class="d-none" action="" method="">
+      <form id="ind_rat_alpha_form" class="d-none" action="" method="">
         <h5>Ratiometric alpha parameters</h5>
         Gompertz min and max values <br>
         Min
@@ -90,7 +90,7 @@
       </form>
 
       <!-- Mean expression form -->
-      <form id="mean_form" class="d-none" action="" method="">
+      <form id="ind_mean_form" class="d-none" action="" method="">
         <h5>Mean expression parameters</h5>
         Measurement name 1 (mname1)
         <select id="mname1">
@@ -103,7 +103,7 @@
 
       <!-- Heatmap form -->
       <form id="heat_form" class="d-none" action="" method="">
-        <h5>Choose the function for the induction curve</h5>
+        <h5>Choose the function for Heatmap</h5>
         <input id="heat_ratrho" type="radio" name="induction" value="rat_rho">
         <label for="heat_ratrho">Ratiometric rho</label><br>
 
@@ -229,9 +229,9 @@
         $("#kym_form").addClass("d-none")
 
         // Make induction curve forms dissapear
-        $("#rat_rho_form").addClass("d-none")
-        $("#rat_alpha_form").addClass("d-none")
-        $("#mean_form").addClass("d-none")
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
       })
 
       // KYMOGRAPH
@@ -241,9 +241,9 @@
         $("#kym_form").removeClass("d-none")
 
         // Make induction curve forms dissapear
-        $("#rat_rho_form").addClass("d-none")
-        $("#rat_alpha_form").addClass("d-none")
-        $("#mean_form").addClass("d-none")
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
 
         // Make heatmap forms dissapear
         $("#heat_rat_rho_form").addClass("d-none")
@@ -254,21 +254,21 @@
       // INDUCTION CURVE FUNCTIONS
       // Check if ratiometric rho selected
       $("#ind_form input[id='ratrho']").on("click", () => {
-        $("#rat_rho_form").removeClass("d-none")
-        $("#rat_alpha_form").addClass("d-none")
-        $("#mean_form").addClass("d-none")
+        $("#ind_rat_rho_form").removeClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
       })
       // Check if ratiometric alpha selected
       $("#ind_form input[id='ratalpha']").on("click", () => {
-        $("#rat_rho_form").addClass("d-none")
-        $("#rat_alpha_form").removeClass("d-none")
-        $("#mean_form").addClass("d-none")
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").removeClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
       })
       // Check if mean expression selected
       $("#ind_form input[id='meanexp']").on("click", () => {
-        $("#rat_rho_form").addClass("d-none")
-        $("#rat_alpha_form").addClass("d-none")
-        $("#mean_form").removeClass("d-none")
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").removeClass("d-none")
       })
 
       // HEATMAP FUNCTIONS
@@ -292,19 +292,70 @@
       })
 
     })
-
-      // AL PRESIONAR ANALIZAR CHEQUEO TODAS LAS OPCIONES
+      // Analysis
+      // By pressing Analyse button, extraction of data is made
       $("#analyse").on("click", () => {
+
+        // Induction Curve
         if($("#indcur").is(':checked')) {
           // Extraer los parámetros del análisis
           console.log("indcur activado")
-        } else if ($("#heatmap").is(':checked')) {
+
+          // Ratiometric rho
+          if($("#ind_form input[id='ratrho']").is(':checked')) {
+            console.log("indcur ratiometric rho activado")
+          }
+
+          // Ratiometric alpha
+          else if($("#ind_form input[id='ratalpha']").is(':checked')) {
+            console.log("indcur ratiometric alpha activado")
+          }
+
+          // Mean expression
+          else if($("#ind_form input[id='meanexp']").is(':checked')) {
+            console.log("indcur mean expression activado")
+          }
+          // No function selected
+          else {
+            alert("You must select a function for the induction curve analysis")
+          }
+        }
+
+        // Heatmap
+        else if ($("#heatmap").is(':checked')) {
           // Extraer los parámetros del análisis
           console.log("heatmap activado")
-        } else if ($("#kym").is(':checked')) {
+
+          // Ratiometric rho
+          if($("#heat_form input[id='heat_ratrho']").is(':checked')) {
+            console.log("heatmap ratiometric rho activado")
+          }
+
+          // Ratiometric alpha
+          else if($("#heat_form input[id='heat_ratalpha']").is(':checked')) {
+            console.log("heatmap ratiometric alpha activado")
+          }
+
+          // Mean expression
+          else if($("#heat_form input[id='heat_meanexp']").is(':checked')) {
+            console.log("heatmap mean expression activado")
+          }
+          // No function selected
+          else {
+            alert("You must select a function for the heatmap analysis")
+          }
+        }
+
+        // Kymograph
+        else if ($("#kym").is(':checked')) {
           // Extraer los parámetros del análisis
           console.log("kym activado")
-        } else {
+
+          // No hay opciones, solo se deben extraer los parámetros
+        }
+
+        // No selection
+        else {
           alert("You must select an analysis option")
         }
       })

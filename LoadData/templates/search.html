@@ -15,26 +15,25 @@
       <h1>Start your search</h1>
     </div>
 
-    <div id="schFile" class="container">
+    <div class="container">
 
-      <!-- ESTE ES EL DE PRUEBA
-      <form action="plots/1" method="get"> -->
-
-      <form action="searchre" method="post">
+      <form id="schForm" action="searchre" method="post">
         {% csrf_token %}
-        Measurement<br>
-        <input type="text" name="mea_name" placeholder=""><br>
-        Strain<br>
-        <input type="text" name="str_name"><br>
-        Media<br>
-        <input type="text" name="med_name"><br>
+        Experiment<br>
+        <input type="text" name="exp_name" placeholder=""><br>
         DNA<br>
         <input type="text" name="dna_name"><br>
+        Media<br>
+        <input type="text" name="med_name"><br>
+        Strain<br>
+        <input type="text" name="str_name"><br>
+        Inducer<br>
+        <input type="text" name="ind_name"><br>
+        Measurement name<br>
+        <input type="text" name="mea_name" placeholder=""><br>
 
-        <!-- COMO HAGO CON EL FORM SI MI OPCION DEPENDE DEL BOTON QUE SE APRETE? -->
-
-        <button id="subQuery" type="submit" name="button">Plot</button>
-        <button id="subQuery" type="submit" name="button">Analyse</button>
+        <button id="subPlot" type="submit" name="button">Plot</button>
+        <button id="subAnalyse" type="submit" name="button">Analyse</button>
       </form>
     </div>
 
@@ -45,13 +44,16 @@
       $(document).ready(function() {
 
         let data = []
-        $("#subQuery").click(function(event) {
-          data.push( $("#schFile input").serializeArray() )
+        $("#subPlot").on("click", () => {
+          data.push($("#schForm input").serializeArray())
           console.log(data)
-        // HACER AJAX POST para enviar
+        })
 
-        });
-      });
+        $("#subAnalyse").on("click", () => {
+          data.push($("#schForm input").serializeArray())
+          console.log(data)
+        })
+      })
     </script>
 
   </body>
