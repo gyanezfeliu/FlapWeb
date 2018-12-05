@@ -207,9 +207,7 @@ def kymograph(qsamples, func, **kwargs):
     c1,bins1 = pd.cut(df.t, 80, retbins=True)
     c2,bins2 = pd.cut(df.conc, 12, retbins=True)
     hm = df.groupby([c1, c2]).value.mean().unstack()
-    print(bins1.shape)
-    print(bins2.shape)
-    print(c1.shape)
+
     return hm,bins1,bins2
 
 def induction_curve(qsamples, func, **kwargs):

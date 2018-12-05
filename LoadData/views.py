@@ -44,9 +44,13 @@ def searchRes(request):
     'posts': request.POST
     })
     return HttpResponse(data, content_type='application/json')
-    
+
 def plots(request, id=0):
     return render(request, 'plots.html', {})
 
 def home(request):
     return render(request, 'home.html', {})
+def test(request):
+    to_show = fr.MonkeyReader.test()
+
+    return render(request, 'test.html', {'graph': to_show})

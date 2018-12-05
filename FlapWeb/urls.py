@@ -28,6 +28,7 @@ urlpatterns = [
     path('monkey/plots/<int:id>', views.plots),
     path('monkey/upload', views.index),
     path('monkey/massupload', views.massUpload),
+    path('monkey/test', views.test),
     path('', views.home)
     #url(r'^api-auth/', include('rest_framework.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
