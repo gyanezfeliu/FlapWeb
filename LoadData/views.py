@@ -39,15 +39,26 @@ def search(request):
     return render(request, 'search.html', {})
 
 def plot(request):
-    to_show = fr.MonkeyReader.test(request)
+    to_show = fr.MonkeyReader.plot(request)
     return render(request, 'to_plot.html', {'graph': to_show})
 
-def searchRes(request):
+def to_analysis(request):
+    # Recibo los datos desde Search como request
     data = json.dumps({
-    'status': 'Ok',
     'posts': request.POST
     })
-    return HttpResponse(data, content_type='application/json')
+    return render(request, 'analysis.html', {'from_search': data})
+
+    # Esto tengo que hacerlo desde otro método, desde el $.post que haré desde
+    # analysis.html, en donde enviaré formulario con la información de la query
+    # y con la información del análisis. Debo por lo tanto cambiar el nombre a
+    # ESTE método (arriba) y desde el otro método llamar a MonkeyReader.analysis
+    # desde analysis.html para renderizar en el mismo analysis.html el gráfico
+    # resultante, igual que como hice en search.
+
+def make_analysis(request):
+    to_analyse = fr.MonkeyReader.analysis(request)
+    return render(request, 'analysis_made.html', {'graph': to_analyse})
 
 def plots(request, id=0):
     return render(request, 'plots.html', {})

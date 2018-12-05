@@ -6,199 +6,224 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
+    <style media="screen">
+      input[type=text]{
+        width: 100px;
+      }
+    </style>
+
   </head>
   <body>
+    <br/><br/>
+
+
+    <form id="vieneDeSearch" class="" action="" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="dataSearch" value="{{ from_search }}">
+    </form>
+
+
     <div class="container">
-      <h3>Select your analysis</h3>
+      <div class="row">
+        <div class="col-4">
 
-      <!-- Analysis form -->
-      <form id="analysis_form" class="" action="" method="post">
-        <input id="indcur" type="radio" name="analysis" value="ind_curve">
-        <label for="indcur">Induction curve</label><br>
+          <h3>Select your analysis</h3>
 
-        <input id="heatmap" type="radio" name="analysis" value="heatmap">
-        <label for="heatmap">Heatmap</label><br>
+          <!-- Analysis form -->
+          <form id="analysis_form" class="" action="" method="post">
+            <input id="indcur" type="radio" name="analysis" value="ind_curve">
+            <label for="indcur">Induction curve</label><br>
 
-        <input id="kym" type="radio" name="analysis" value="kymograph">
-        <label for="kym">Kymograph</label><br>
+            <input id="heatmap" type="radio" name="analysis" value="heatmap">
+            <label for="heatmap">Heatmap</label><br>
 
-      </form>
+            <input id="kym" type="radio" name="analysis" value="kymograph">
+            <label for="kym">Kymograph</label><br>
 
-      <!-- Induction curve form -->
-      <form id="ind_form" class="d-none" action="" method="">
-        <h5>Choose the function for the induction curve</h5>
-        <input id="ratrho" type="radio" name="induction" value="rat_rho">
-        <label for="ratrho">Ratiometric rho</label><br>
+          </form>
 
-        <input id="ratalpha" type="radio" name="induction" value="rat_alpha">
-        <label for="ratalpha">Ratiometric alpha</label><br>
+          <!-- Induction curve form -->
+          <form id="ind_form" class="d-none" action="" method="">
+            <h5>Choose the function for the induction curve</h5>
+            <input id="ratrho" type="radio" name="induction" value="rat_rho">
+            <label for="ratrho">Ratiometric rho</label><br>
 
-        <input id="meanexp" type="radio" name="induction" value="mean_exp">
-        <label for="meanexp">Mean expression</label><br>
-      </form>
+            <input id="ratalpha" type="radio" name="induction" value="rat_alpha">
+            <label for="ratalpha">Ratiometric alpha</label><br>
 
-      <!-- Ratiometric rho form -->
-      <form id="ind_rat_rho_form" class="d-none" action="" method="">
-        <h5>Ratiometric rho parameters</h5>
-        Gompertz min and max values <br>
-        Min
-        <input type="text" name="min1" value="">
-        <input type="text" name="min2" value="">
-        <input type="text" name="min3" value=""><br>
-        Max
-        <input type="text" name="max1" value="">
-        <input type="text" name="max2" value="">
-        <input type="text" name="max3" value=""><br>
+            <input id="meanexp" type="radio" name="induction" value="mean_exp">
+            <label for="meanexp">Mean expression</label><br>
+          </form>
 
-        Measurement name 1 (mname1)
-        <select id="mname1">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-       </select><br>
-        Meaurement name 2 (mname2)
-        <select id="mname2">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-       </select><br>
-        Number of doubling times (ndt)
-        <input type="text" name="ndt" value=""><br>
-      </form>
+          <!-- Ratiometric rho form -->
+          <form id="ind_rat_rho_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Ratiometric rho parameters</h5>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
 
-      <!-- Ratiometric alpha form -->
-      <form id="ind_rat_alpha_form" class="d-none" action="" method="">
-        <h5>Ratiometric alpha parameters</h5>
-        Gompertz min and max values <br>
-        Min
-        <input type="text" name="min1" value="">
-        <input type="text" name="min2" value="">
-        <input type="text" name="min3" value=""><br>
-        Max
-        <input type="text" name="max1" value="">
-        <input type="text" name="max2" value="">
-        <input type="text" name="max3" value=""><br>
+            Measurement name 1 (mname1)
+            <select id="mname1">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+           </select><br>
+            Meaurement name 2 (mname2)
+            <select id="mname2">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+           </select><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+          </form>
 
-        Measurement name (mname)
-        <select id="mname1">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-       </select><br>
-        Number of doubling times (ndt)
-        <input type="text" name="ndt" value=""><br>
-      </form>
+          <!-- Ratiometric alpha form -->
+          <form id="ind_rat_alpha_form" class="d-none" action="" method="">
+            <h5>Ratiometric alpha parameters</h5>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
 
-      <!-- Mean expression form -->
-      <form id="ind_mean_form" class="d-none" action="" method="">
-        <h5>Mean expression parameters</h5>
-        Measurement name 1 (mname1)
-        <select id="mname1">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-        </select>
-      </form>
+            Measurement name (mname)
+            <select id="mname1">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+           </select><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+          </form>
+
+          <!-- Mean expression form -->
+          <form id="ind_mean_form" class="d-none" action="" method="">
+            <h5>Mean expression parameters</h5>
+            Measurement name 1 (mname1)
+            <select id="mname1">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+            </select>
+          </form>
 
 
-      <!-- Heatmap form -->
-      <form id="heat_form" class="d-none" action="" method="">
-        <h5>Choose the function for Heatmap</h5>
-        <input id="heat_ratrho" type="radio" name="induction" value="rat_rho">
-        <label for="heat_ratrho">Ratiometric rho</label><br>
+          <!-- Heatmap form -->
+          <form id="heat_form" class="d-none" action="" method="">
+            <h5>Choose the function for Heatmap</h5>
+            <input id="heat_ratrho" type="radio" name="induction" value="rat_rho">
+            <label for="heat_ratrho">Ratiometric rho</label><br>
 
-        <input id="heat_ratalpha" type="radio" name="induction" value="rat_alpha">
-        <label for="heat_ratalpha">Ratiometric alpha</label><br>
+            <input id="heat_ratalpha" type="radio" name="induction" value="rat_alpha">
+            <label for="heat_ratalpha">Ratiometric alpha</label><br>
 
-        <input id="heat_meanexp" type="radio" name="induction" value="mean_exp">
-        <label for="heat_meanexp">Mean expression</label><br>
-      </form>
+            <input id="heat_meanexp" type="radio" name="induction" value="mean_exp">
+            <label for="heat_meanexp">Mean expression</label><br>
+          </form>
 
-      <!-- Ratiometric rho form -->
-      <form id="heat_rat_rho_form" class="d-none" action="" method="">
-        <h5>Ratiometric rho parameters</h5>
-        Criteria to bin by (bin)
-        <input type="text" name="bin" value=""><br>
-        Gompertz min and max values <br>
-        Min
-        <input type="text" name="min1" value="">
-        <input type="text" name="min2" value="">
-        <input type="text" name="min3" value=""><br>
-        Max
-        <input type="text" name="max1" value="">
-        <input type="text" name="max2" value="">
-        <input type="text" name="max3" value=""><br>
+          <!-- Ratiometric rho form -->
+          <form id="heat_rat_rho_form" class="d-none" action="" method="">
+            <h5>Ratiometric rho parameters</h5>
+            Criteria to bin by (bin)
+            <input type="text" name="bin" value=""><br>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
 
-        Measurement name 1 (mname1)
-        <select id="mname1">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-       </select><br>
-        Meaurement name 2 (mname2)
-        <select id="mname2">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-       </select><br>
-        Number of doubling times (ndt)
-        <input type="text" name="ndt" value=""><br>
-      </form>
+            Measurement name 1 (mname1)
+            <select id="mname1">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+           </select><br>
+            Meaurement name 2 (mname2)
+            <select id="mname2">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+           </select><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+          </form>
 
-      <!-- Ratiometric alpha form -->
-      <form id="heat_rat_alpha_form" class="d-none" action="" method="">
-        <h5>Ratiometric alpha parameters</h5>
-        Criteria to bin by (bin)
-        <input type="text" name="bin" value=""><br>
-        Gompertz min and max values <br>
-        Min
-        <input type="text" name="min1" value="">
-        <input type="text" name="min2" value="">
-        <input type="text" name="min3" value=""><br>
-        Max
-        <input type="text" name="max1" value="">
-        <input type="text" name="max2" value="">
-        <input type="text" name="max3" value=""><br>
+          <!-- Ratiometric alpha form -->
+          <form id="heat_rat_alpha_form" class="d-none" action="" method="">
+            <h5>Ratiometric alpha parameters</h5>
+            Criteria to bin by (bin)
+            <input type="text" name="bin" value=""><br>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
 
-        Measurement name (mname)
-        <select id="mname1">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-       </select><br>
-        Number of doubling times (ndt)
-        <input type="text" name="ndt" value=""><br>
-      </form>
+            Measurement name (mname)
+            <select id="mname1">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+           </select><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+          </form>
 
-      <!-- Mean expression form -->
-      <form id="heat_mean_form" class="d-none" action="" method="">
-        <h5>Mean expression parameters</h5>
-        Criteria to bin by (bin)
-        <input type="text" name="bin" value=""><br>
-        Measurement name 1 (mname1)
-        <select id="mname1">
-         <option value="cfp">CFP</option>
-         <option value="yfp">YFP</option>
-         <option value="rfp">RFP</option>
-        </select>
-      </form>
+          <!-- Mean expression form -->
+          <form id="heat_mean_form" class="d-none" action="" method="">
+            <h5>Mean expression parameters</h5>
+            Criteria to bin by (bin)
+            <input type="text" name="bin" value=""><br>
+            Measurement name 1 (mname1)
+            <select id="mname1">
+             <option value="CFP">CFP</option>
+             <option value="YFP">YFP</option>
+             <option value="RFP">RFP</option>
+            </select>
+          </form>
 
-      <!-- Kymograph form -->
-      <form id="kym_form" class="d-none" action="" method="">
-        <h5>Kymograph parameters</h5>
-          Measurement name 1 (mname1)
-          <select id="mname1">
-           <option value="cfp">CFP</option>
-           <option value="yfp">YFP</option>
-           <option value="rfp">RFP</option>
-         </select><br>
-          Skip (skip)
-          <input type="text" name="skip" value=""><br>
-        </form>
-      </form>
+          <!-- Kymograph form -->
+          <form id="kym_form" class="d-none" action="" method="">
+            <h5>Kymograph parameters</h5>
+              Measurement name 1 (mname1)
+              <select id="mname1">
+               <option value="CFP">CFP</option>
+               <option value="YFP">YFP</option>
+               <option value="RFP">RFP</option>
+             </select><br>
+              Skip (skip)
+              <input type="text" name="skip" value=""><br>
+            </form>
+          </form>
 
-      <br>
-      <input id="analyse" type="submit" name="" value="Analyse"><br>
+          <br>
+          <input id="analyse" type="submit" name="" value="Analyse"><br>
+        </div>
+
+        <div id="plot" class="col-8">
+
+        </div>
+      </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
@@ -303,7 +328,19 @@
 
           // Ratiometric rho
           if($("#ind_form input[id='ratrho']").is(':checked')) {
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#ind_rat_rho_form input").serializeArray())
+            data.push($("#ind_rat_rho_form #mname1 option:selected").val())
+            data.push($("#ind_rat_rho_form #mname2 option:selected").val())
+            data.push('INDUCTION')
+
             console.log("indcur ratiometric rho activado")
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_rat_rho_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              console.log(data2)
+              $( "#plot" ).empty().append( data2)
+            });
           }
 
           // Ratiometric alpha

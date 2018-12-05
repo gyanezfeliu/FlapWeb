@@ -33,18 +33,18 @@ class MonkeyReader():
     def massUpload():
         subprocess.Popen(['python', 'manage.py', 'runscript', 'massiveUpload'], stdout=subprocess.PIPE)
 
-    def test(request):
+    def plot(request):
 
         #### PLOTTING
-
         """
+        # Parameter names:
+
         param1[0][1][name]	exp_name
         param1[0][2][name]	dna_name
         param1[0][3][name]	med_name
         param1[0][4][name]	str_name
         param1[0][5][name]	ind_name
         param1[0][6][name]	mea_name
-        param1[0][6][value]	OD
         """
         exp_name = request.POST['param1[0][1][value]']
         dna_name = request.POST['param1[0][2][value]']
@@ -66,8 +66,6 @@ class MonkeyReader():
             plt.plot(y, r, '.')
         plt.xlabel('Time (hours)')
         plt.ylabel('Expression (AU)')
-        #return fig_to_html(fig1)
-
 
         fig2 = plt.figure()
         for s in samps:
@@ -79,16 +77,17 @@ class MonkeyReader():
 
         return [fig_to_html(fig1), fig_to_html(fig2)];
 
+    def analysis(request):
         #### INDUCTION CURVE
-        #
-        # samps = Sample.objects.filter(vector__dna__name__exact='T6')
-        # concs,my = an.induction_curve(samps, an.ratiometric_rho, bounds=([0,0,0],[3,1,5]), mname1='YFP', mname2='CFP', ndt=2)
-        #
-        # fig = plt.figure()
-        # plt.plot(np.log10(concs), my, '.')
-        # plt.xlabel('log(Arabinose conc.) (M)')
-        # plt.ylabel('Mean fluorescence (AU)')
-        # return fig_to_html(fig);
+
+        samps = Sample.objects.filter(vector__dna__name__exact='T6')
+        concs,my = an.induction_curve(samps, an.ratiometric_rho, bounds=([0,0,0],[3,1,5]), mname1='YFP', mname2='CFP', ndt=2)
+
+        fig = plt.figure()
+        plt.plot(np.log10(concs), my, '.')
+        plt.xlabel('log(Arabinose conc.) (M)')
+        plt.ylabel('Mean fluorescence (AU)')
+        return fig_to_html(fig);
 
 
 

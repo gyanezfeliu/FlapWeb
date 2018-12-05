@@ -18,7 +18,7 @@
       <div class="row">
         <div class="col-4">
           <h2>Start your search</h2>
-          <form id="schForm" action="searchre" method="post">
+          <form id="schForm" action="analysis" method="post">
             {% csrf_token %}
             Experiment<br>
             <input type="text" name="exp_name" placeholder=""><br>
@@ -88,6 +88,7 @@
           });
         })
 
+        // NO SIRVE
         $("#subAnalyse").on("click", () => {
           let data = []
           data.push($("#schForm input").serializeArray())
