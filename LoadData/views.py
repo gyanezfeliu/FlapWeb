@@ -38,6 +38,10 @@ def index(request):
 def search(request):
     return render(request, 'search.html', {})
 
+def plot(request):
+    to_show = fr.MonkeyReader.test(request)
+    return render(request, 'to_plot.html', {'graph': to_show})
+
 def searchRes(request):
     data = json.dumps({
     'status': 'Ok',
@@ -53,4 +57,5 @@ def home(request):
 def test(request):
     to_show = fr.MonkeyReader.test()
 
-    return render(request, 'test.html', {'graph': to_show})
+    # return render(request, 'test.html', {'graph': to_show})
+    return render(request, 'search.html', {'graph': to_show})

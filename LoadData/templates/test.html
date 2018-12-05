@@ -16,7 +16,17 @@
     </div>
 
     <div class="container">
-      {{graph|safe}}
+      <div class="row">
+        <!-- CUANDO VIENEN LOS DOS DE PLOTTING -->
+        <!-- {% for elem in graph %}
+          <div class="col-6">
+            {{elem|safe}}
+          </div>
+        {% endfor %} -->
+
+        <!-- CUANDO SOLO VIENE UN GRAFICO -->
+        {{graph|safe}}
+      </div>
     </div>
 
   </body>

@@ -33,30 +33,55 @@ class MonkeyReader():
     def massUpload():
         subprocess.Popen(['python', 'manage.py', 'runscript', 'massiveUpload'], stdout=subprocess.PIPE)
 
-    def test():
+    def test(request):
+
+        #### PLOTTING
+
+        # samps = Sample.objects.filter(vector__dna__name__exact='std:RFP/std:YFP/std:CFP', strain__exact='Top10')
+        # fig1 = plt.figure()
+        # for s in samps:
+        #     df = an.get_measurements(s)
+        #     y = df[df['name']=='YFP']['value']
+        #     c = df[df['name']=='CFP']['value']
+        #     r = df[df['name']=='RFP']['value']
+        #
+        #     plt.plot(y, r, '.')
+        # plt.xlabel('Time (hours)')
+        # plt.ylabel('Expression (AU)')
+        #
+        # fig2 = plt.figure()
+        # for s in samps:
+        #     df = an.get_measurements(s)
+        #     er = an.expression_rate(df=df, mname='CFP', skip=20)
+        #     plt.plot(er)
+        # plt.ylabel('Expression rate')
+        # plt.xlabel('Time (hours)')
+        #
+        # return [fig_to_html(fig1), fig_to_html(fig2)];
 
         #### INDUCTION CURVE
 
         samps = Sample.objects.filter(vector__dna__name__exact='T6')
         concs,my = an.induction_curve(samps, an.ratiometric_rho, bounds=([0,0,0],[3,1,5]), mname1='YFP', mname2='CFP', ndt=2)
 
-        # fig = plt.figure()
-        # plt.plot(np.log10(concs), my, '.')
-        # plt.xlabel('log(Arabinose conc.) (M)')
-        # plt.ylabel('Mean fluorescence (AU)')
-        # return fig_to_html(fig);
-
-        z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
-        a = z[0]
-        b = z[1]
-        k = z[2]
-        n = z[3]
-
-        x = np.linspace(-6,-2,200)
         fig = plt.figure()
-        plt.plot(x, an.hill(10**x,a,b,k,n), '-.')
-        plt.plot(np.log10(concs),my,'r.')
+        plt.plot(np.log10(concs), my, '.')
+        plt.xlabel('log(Arabinose conc.) (M)')
+        plt.ylabel('Mean fluorescence (AU)')
         return fig_to_html(fig);
+
+        #### CURVE FIT
+        # z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
+        # a = z[0]
+        # b = z[1]
+        # k = z[2]
+        # n = z[3]
+        #
+        # x = np.linspace(-6,-2,200)
+        # fig = plt.figure()
+        # plt.plot(x, an.hill(10**x,a,b,k,n), '-.')
+        # plt.plot(np.log10(concs),my,'r.')
+        # return fig_to_html(fig);
 
         #### HEATMAP
 
