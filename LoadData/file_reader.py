@@ -78,20 +78,51 @@ class MonkeyReader():
         return [fig_to_html(fig1), fig_to_html(fig2)];
 
     def analysis(request):
-        #### INDUCTION CURVE
+        analysis_type = request.POST['param1[]']
 
-        samps = Sample.objects.filter(vector__dna__name__exact='T6')
-        concs,my = an.induction_curve(samps, an.ratiometric_rho, bounds=([0,0,0],[3,1,5]), mname1='YFP', mname2='CFP', ndt=2)
+        #Datos Query
+        dict_query = json.loads(request.POST['param1[0][1][value]'])
+        d_query = {}
+        d_query['exp_name'] = dict_query['posts']['exp_name']
+        d_query['dna_name'] = dict_query['posts']['dna_name']
+        d_query['med_name'] = dict_query['posts']['med_name']
+        d_query['str_name'] = dict_query['posts']['str_name']
+        d_query['ind_name'] = dict_query['posts']['ind_name']
+        d_query['mea_name'] = dict_query['posts']['mea_name']
 
-        fig = plt.figure()
-        plt.plot(np.log10(concs), my, '.')
-        plt.xlabel('log(Arabinose conc.) (M)')
-        plt.ylabel('Mean fluorescence (AU)')
-        return fig_to_html(fig);
+        if analysis_type == "INDUCTIONRHO" or analysis_type == "INDUCTIONALPHA":
+            bounds_min = [request.POST['param1[1][1][value]'],
+                          request.POST['param1[1][2][value]'],
+                          request.POST['param1[1][3][value]']]
+            bounds_max = [request.POST['param1[1][4][value]'],
+                          request.POST['param1[1][5][value]'],
+                          request.POST['param1[1][6][value]']]
+            ndt = request.POST['param1[1][7][value]']
+            mname1 = request.POST['param1[1][8][value]']
+
+        else:
+            mname1 = request.POST['param1[1][1][value]']
+        if analysis_type == "INDUCTIONRHO":
+            mname2 = request.POST['param1[1][9][value]']
+
+        samps = gen_samps(d_query)
+
+        if analysis_type == 'INDUCTIONRHO':
+            concs,my = an.induction_curve(samps, an.ratiometric_rho, bounds=([0,0,0],[3,1,5]), mname1='YFP', mname2='CFP', ndt=2)
+
+        elif analysis_type == 'INDUCTIONALPHA':
+            concs,my = an.induction_curve(samps, an.ratiometric_alpha, bounds=([0,0,0],[3,1,5]), mname1='YFP', ndt=2)
+
+        elif analysis_type == 'INDUCTIONMEAN':
+            concs,my = an.induction_curve(samps, an.mean_expression, mname1='YFP')
 
 
-
-        #### CURVE FIT
+        # fig1 = plt.figure()
+        # plt.plot(np.log10(concs), my, '.')
+        # plt.xlabel('log(Arabinose conc.) (M)')
+        # plt.ylabel('Mean fluorescence (AU)')
+        #
+        # #### CURVE FIT
         # z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
         # a = z[0]
         # b = z[1]
@@ -99,10 +130,12 @@ class MonkeyReader():
         # n = z[3]
         #
         # x = np.linspace(-6,-2,200)
-        # fig = plt.figure()
+        # fig2 = plt.figure()
         # plt.plot(x, an.hill(10**x,a,b,k,n), '-.')
         # plt.plot(np.log10(concs),my,'r.')
-        # return fig_to_html(fig);
+        #
+        # return [fig_to_html(fig1), fig_to_html(fig2)];
+
 
         #### HEATMAP
 
@@ -127,3 +160,62 @@ class MonkeyReader():
         # plt.pcolor(hm)
         # plt.colorbar()
         # return fig_to_html(fig);
+
+    def gen_samps(d_query):
+        if d_query['exp_name'] != '' and d_query['dna_name'] != '' and d_query['med_name'] != '' and d_query['str_name'] != '':
+            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+                                          vector__dna__name__exact=d_query['dna_name'],
+                                          media__exact=d_query['med_name'],
+                                          strain__exact=d_query['str_name'])
+
+        elif d_query['exp_name'] == '' and d_query['dna_name'] != '' and d_query['med_name'] != '' and d_query['str_name'] != '':
+            samps = Sample.objects.filter(vector__dna__name__exact=d_query['dna_name'],
+                                          media__exact=d_query['med_name'],
+                                          strain__exact=d_query['str_name'])
+
+        elif d_query['exp_name'] == '' and d_query['dna_name'] != '' and d_query['med_name'] != '' and d_query['str_name'] == '':
+            samps = Sample.objects.filter(vector__dna__name__exact=d_query['dna_name'],
+                                          media__exact=d_query['med_name'])
+
+        elif d_query['exp_name'] == '' and d_query['dna_name'] != '' and d_query['med_name'] == '' and d_query['str_name'] != '':
+            samps = Sample.objects.filter(vector__dna__name__exact=d_query['dna_name'],
+                                          strain__exact=d_query['str_name'])
+
+        elif d_query['exp_name'] == '' and d_query['dna_name'] != '' and d_query['med_name'] == '' and d_query['str_name'] == '':
+            samps = Sample.objects.filter(vector__dna__name__exact=d_query['dna_name'])
+
+        elif d_query['exp_name'] == '' and d_query['dna_name'] == '' and d_query['med_name'] != '' and d_query['str_name'] != '':
+            samps = Sample.objects.filter(media__exact=d_query['med_name'],
+                                          strain__exact=d_query['str_name'])
+
+        elif d_query['exp_name'] == '' and d_query['dna_name'] == '' and d_query['med_name'] != '' and d_query['str_name'] == '':
+            samps = Sample.objects.filter(media__exact=d_query['med_name'])
+
+        elif d_query['exp_name'] == '' and d_query['dna_name'] == '' and d_query['med_name'] == '' and d_query['str_name'] != '':
+            samps = Sample.objects.filter(strain__exact=d_query['str_name'])
+
+        # If no experiment, dna, media or strain selected
+        #if d_query['exp_name'] == '' and d_query['dna_name'] == '' and d_query['med_name'] == '' and d_query['str_name'] == '':
+        else:
+            if d_query['ind_name'] != '':
+                samps = set([i.sample for i in Inducer.objects.filter(pubchemid__exact=d_query['ind_name'])])
+                if d_query['mea_name'] != '':
+                    samps_ids = [s.id for s in samps]
+                    samps = set([m.sample for m in Measurement.objects.filter(name__exact=d_query['mea_name'], sample__id__in=samps_ids)])
+            else:
+                if d_query['mea_name'] != '':
+                    samps = set([m.sample for m in Measurement.objects.filter(name__exact=d_query['mea_name'])])
+
+            return samps
+
+        samps_ids = [s.id for s in samps]
+
+        if d_query['ind_name'] != '':
+            samps = set([i.sample for i in Inducer.objects.filter(pubchemid__exact=d_query['ind_name'], sample__id__in=samps_ids)])
+            samps_ids = [s.id for s in samps]
+            if d_query['mea_name'] != '':
+                samps = set([m.sample for m in Measurement.objects.filter(name__exact=d_query['mea_name'], sample__id__in=samps_ids)])
+        else:
+            if d_query['mea_name'] != '':
+                samps = set([m.sample for m in Measurement.objects.filter(name__exact=d_query['mea_name'], sample__id__in=samps_ids)])
+        return samps

@@ -1,10 +1,12 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
-    <!-- Bootstrap CSS -->
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'to_plot.css' %}">
 
     <style media="screen">
       input[type=text]{
@@ -68,25 +70,18 @@
             <input type="text" name="max1" value="">
             <input type="text" name="max2" value="">
             <input type="text" name="max3" value=""><br>
-
-            Measurement name 1 (mname1)
-            <select id="mname1">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-           </select><br>
-            Meaurement name 2 (mname2)
-            <select id="mname2">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-           </select><br>
             Number of doubling times (ndt)
             <input type="text" name="ndt" value=""><br>
+            Measurement name 1 (mname1)
+            <input type="text" name="mname1" value=""><br>
+            Meaurement name 2 (mname2)
+            <input type="text" name="mname2" value=""><br>
+
           </form>
 
           <!-- Ratiometric alpha form -->
           <form id="ind_rat_alpha_form" class="d-none" action="" method="">
+            {% csrf_token %}
             <h5>Ratiometric alpha parameters</h5>
             Gompertz min and max values <br>
             Min
@@ -97,26 +92,18 @@
             <input type="text" name="max1" value="">
             <input type="text" name="max2" value="">
             <input type="text" name="max3" value=""><br>
-
-            Measurement name (mname)
-            <select id="mname1">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-           </select><br>
             Number of doubling times (ndt)
             <input type="text" name="ndt" value=""><br>
+            Measurement name (mname)
+            <input type="text" name="mname1" value=""><br>
           </form>
 
           <!-- Mean expression form -->
           <form id="ind_mean_form" class="d-none" action="" method="">
+            {% csrf_token %}
             <h5>Mean expression parameters</h5>
-            Measurement name 1 (mname1)
-            <select id="mname1">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-            </select>
+            Measurement name (mname)
+            <input type="text" name="mname1" value="">
           </form>
 
 
@@ -226,9 +213,9 @@
       </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 
     <script>
     $ = jQuery.noConflict();
@@ -323,34 +310,129 @@
 
         // Induction Curve
         if($("#indcur").is(':checked')) {
-          // Extraer los parámetros del análisis
-          console.log("indcur activado")
-
           // Ratiometric rho
           if($("#ind_form input[id='ratrho']").is(':checked')) {
 
             let data = []
             data.push($("#vieneDeSearch input").serializeArray())
             data.push($("#ind_rat_rho_form input").serializeArray())
-            data.push($("#ind_rat_rho_form #mname1 option:selected").val())
-            data.push($("#ind_rat_rho_form #mname2 option:selected").val())
-            data.push('INDUCTION')
-
-            console.log("indcur ratiometric rho activado")
+            data.push('INDUCTIONRHO')
             $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_rat_rho_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
-              console.log(data2)
               $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+
             });
           }
-
           // Ratiometric alpha
           else if($("#ind_form input[id='ratalpha']").is(':checked')) {
-            console.log("indcur ratiometric alpha activado")
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#ind_rat_alpha_form input").serializeArray())
+            data.push('INDUCTIONALPHA')
+
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_rat_alpha_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+
+            });
           }
 
           // Mean expression
           else if($("#ind_form input[id='meanexp']").is(':checked')) {
-            console.log("indcur mean expression activado")
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#ind_mean_form input").serializeArray())
+            data.push('INDUCTIONMEAN')
+
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_mean_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+
+            });
           }
           // No function selected
           else {

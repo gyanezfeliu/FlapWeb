@@ -58,7 +58,10 @@ def to_analysis(request):
 
 def make_analysis(request):
     to_analyse = fr.MonkeyReader.analysis(request)
-    return render(request, 'analysis_made.html', {'graph': to_analyse})
+
+    ## PARA INDUCTION CURVE
+    #return render(request, 'analysis_made.html', {'graph': to_analyse})
+    return HttpResponse(to_analyse, content_type='application/json')
 
 def plots(request, id=0):
     return render(request, 'plots.html', {})
