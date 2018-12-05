@@ -1,1 +1,20 @@
-{{graph|safe}}
+<div class="tabs">
+  <div class="tab-button-outer">
+    <ul id="tab-button">
+      <li><a href="#tab01">Expression</a></li>
+      <li><a href="#tab02">Expression rate</a></li>
+    </ul>
+  </div>
+
+  <div class="tab-select-outer">
+    <select id="tab-select">
+      <option value="#tab01">Expression</option>
+      <option value="#tab02">Expression rate</option>
+    </select>
+  </div>
+  {% for elem in graph %}
+    <div id="tab0{{forloop.counter}}" class="tab-contents">
+      {{elem|safe}}
+    </div>
+  {% endfor %}
+</div>

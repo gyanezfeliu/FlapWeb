@@ -37,38 +37,60 @@ class MonkeyReader():
 
         #### PLOTTING
 
-        # samps = Sample.objects.filter(vector__dna__name__exact='std:RFP/std:YFP/std:CFP', strain__exact='Top10')
-        # fig1 = plt.figure()
-        # for s in samps:
-        #     df = an.get_measurements(s)
-        #     y = df[df['name']=='YFP']['value']
-        #     c = df[df['name']=='CFP']['value']
-        #     r = df[df['name']=='RFP']['value']
-        #
-        #     plt.plot(y, r, '.')
-        # plt.xlabel('Time (hours)')
-        # plt.ylabel('Expression (AU)')
-        #
-        # fig2 = plt.figure()
-        # for s in samps:
-        #     df = an.get_measurements(s)
-        #     er = an.expression_rate(df=df, mname='CFP', skip=20)
-        #     plt.plot(er)
-        # plt.ylabel('Expression rate')
-        # plt.xlabel('Time (hours)')
-        #
-        # return [fig_to_html(fig1), fig_to_html(fig2)];
+        """
+        param1[0][1][name]	exp_name
+        param1[0][2][name]	dna_name
+        param1[0][3][name]	med_name
+        param1[0][4][name]	str_name
+        param1[0][5][name]	ind_name
+        param1[0][6][name]	mea_name
+        param1[0][6][value]	OD
+        """
+        exp_name = request.POST['param1[0][1][value]']
+        dna_name = request.POST['param1[0][2][value]']
+        med_name = request.POST['param1[0][3][value]']
+        str_name = request.POST['param1[0][4][value]']
+        ind_name = request.POST['param1[0][5][value]']
+        mea_name = request.POST['param1[0][6][value]']
+
+        samps = Sample.objects.filter(vector__dna__name__exact=dna_name, strain__exact=str_name)
+        #samps = Sample.objects.filter(vector__dna__name__exact='std:RFP/std:YFP/std:CFP', strain__exact='Top10')
+
+        fig1 = plt.figure()
+        for s in samps:
+            df = an.get_measurements(s)
+            y = df[df['name']=='YFP']['value']
+            c = df[df['name']=='CFP']['value']
+            r = df[df['name']=='RFP']['value']
+
+            plt.plot(y, r, '.')
+        plt.xlabel('Time (hours)')
+        plt.ylabel('Expression (AU)')
+        #return fig_to_html(fig1)
+
+
+        fig2 = plt.figure()
+        for s in samps:
+            df = an.get_measurements(s)
+            er = an.expression_rate(df=df, mname='CFP', skip=20)
+            plt.plot(er)
+        plt.ylabel('Expression rate')
+        plt.xlabel('Time (hours)')
+
+        return [fig_to_html(fig1), fig_to_html(fig2)];
 
         #### INDUCTION CURVE
+        #
+        # samps = Sample.objects.filter(vector__dna__name__exact='T6')
+        # concs,my = an.induction_curve(samps, an.ratiometric_rho, bounds=([0,0,0],[3,1,5]), mname1='YFP', mname2='CFP', ndt=2)
+        #
+        # fig = plt.figure()
+        # plt.plot(np.log10(concs), my, '.')
+        # plt.xlabel('log(Arabinose conc.) (M)')
+        # plt.ylabel('Mean fluorescence (AU)')
+        # return fig_to_html(fig);
 
-        samps = Sample.objects.filter(vector__dna__name__exact='T6')
-        concs,my = an.induction_curve(samps, an.ratiometric_rho, bounds=([0,0,0],[3,1,5]), mname1='YFP', mname2='CFP', ndt=2)
 
-        fig = plt.figure()
-        plt.plot(np.log10(concs), my, '.')
-        plt.xlabel('log(Arabinose conc.) (M)')
-        plt.ylabel('Mean fluorescence (AU)')
-        return fig_to_html(fig);
 
         #### CURVE FIT
         # z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
