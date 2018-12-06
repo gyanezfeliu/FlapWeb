@@ -4,7 +4,6 @@ import json
 
 from .models import Experiment, Sample, Dna, Vector, Measurement, Inducer
 from . import file_reader as fr
-from . import search as sch
 
 from .forms import UploadFileForm
 
@@ -57,19 +56,18 @@ def to_analysis(request):
     # resultante, igual que como hice en search.
 
 def make_analysis(request):
-    to_analyse = fr.MonkeyReader.analysis(request)
-
-    ## PARA INDUCTION CURVE
-    #return render(request, 'analysis_made.html', {'graph': to_analyse})
-    return HttpResponse(to_analyse, content_type='application/json')
+    if 'INDUCTION' in request.POST['param1[]']:
+        to_analyse = fr.MonkeyReader.analysis_induction(request)
+        return render(request, 'analysis_induction.html', {'graph': to_analyse})
+    elif 'HEATMAP' in request.POST['param1[]']:
+        to_analyse = fr.MonkeyReader.analysis_heatmap(request)
+        return render(request, 'analysis_heatmap.html', {'graph': to_analyse})
+    elif 'KYMOGRAPH' in request.POST['param1[]']:
+        to_analyse = fr.MonkeyReader.analysis_kymograph(request)
+        return render(request, 'analysis_kymograph.html', {'graph': to_analyse})
 
 def plots(request, id=0):
     return render(request, 'plots.html', {})
 
 def home(request):
     return render(request, 'home.html', {})
-def test(request):
-    to_show = fr.MonkeyReader.test()
-
-    # return render(request, 'test.html', {'graph': to_show})
-    return render(request, 'search.html', {'graph': to_show})

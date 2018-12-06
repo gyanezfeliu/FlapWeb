@@ -122,9 +122,8 @@
 
           <!-- Ratiometric rho form -->
           <form id="heat_rat_rho_form" class="d-none" action="" method="">
+            {% csrf_token %}
             <h5>Ratiometric rho parameters</h5>
-            Criteria to bin by (bin)
-            <input type="text" name="bin" value=""><br>
             Gompertz min and max values <br>
             Min
             <input type="text" name="min1" value="">
@@ -134,28 +133,20 @@
             <input type="text" name="max1" value="">
             <input type="text" name="max2" value="">
             <input type="text" name="max3" value=""><br>
-
-            Measurement name 1 (mname1)
-            <select id="mname1">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-           </select><br>
-            Meaurement name 2 (mname2)
-            <select id="mname2">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-           </select><br>
             Number of doubling times (ndt)
             <input type="text" name="ndt" value=""><br>
+            Criteria to bin by (nbins)
+            <input type="text" name="nbins" value=""><br>
+            Measurement name 1 (mname1)
+            <input type="text" name="mname1" value=""><br>
+            Meaurement name 2 (mname2)
+            <input type="text" name="mname2" value=""><br>
           </form>
 
           <!-- Ratiometric alpha form -->
           <form id="heat_rat_alpha_form" class="d-none" action="" method="">
+            {% csrf_token %}
             <h5>Ratiometric alpha parameters</h5>
-            Criteria to bin by (bin)
-            <input type="text" name="bin" value=""><br>
             Gompertz min and max values <br>
             Min
             <input type="text" name="min1" value="">
@@ -165,42 +156,32 @@
             <input type="text" name="max1" value="">
             <input type="text" name="max2" value="">
             <input type="text" name="max3" value=""><br>
-
-            Measurement name (mname)
-            <select id="mname1">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-           </select><br>
             Number of doubling times (ndt)
             <input type="text" name="ndt" value=""><br>
+            Criteria to bin by (nbins)
+            <input type="text" name="nbins" value=""><br>
+            Measurement name (mname)
+            <input type="text" name="mname1" value=""><br>
           </form>
 
           <!-- Mean expression form -->
           <form id="heat_mean_form" class="d-none" action="" method="">
+            {% csrf_token %}
             <h5>Mean expression parameters</h5>
             Criteria to bin by (bin)
             <input type="text" name="bin" value=""><br>
             Measurement name 1 (mname1)
-            <select id="mname1">
-             <option value="CFP">CFP</option>
-             <option value="YFP">YFP</option>
-             <option value="RFP">RFP</option>
-            </select>
+            <input type="text" name="mname1" value=""><br>
           </form>
 
           <!-- Kymograph form -->
           <form id="kym_form" class="d-none" action="" method="">
+            {% csrf_token %}
             <h5>Kymograph parameters</h5>
-              Measurement name 1 (mname1)
-              <select id="mname1">
-               <option value="CFP">CFP</option>
-               <option value="YFP">YFP</option>
-               <option value="RFP">RFP</option>
-             </select><br>
-              Skip (skip)
-              <input type="text" name="skip" value=""><br>
-            </form>
+            Skip (skip)
+            <input type="text" name="skip" value=""><br>
+            Measurement name 1 (mname1)
+            <input type="text" name="mname1" value="">
           </form>
 
           <br>
@@ -307,7 +288,6 @@
       // Analysis
       // By pressing Analyse button, extraction of data is made
       $("#analyse").on("click", () => {
-
         // Induction Curve
         if($("#indcur").is(':checked')) {
           // Ratiometric rho
@@ -347,7 +327,6 @@
                 $tabContents.hide();
                 $(target).show();
               });
-
             });
           }
           // Ratiometric alpha
@@ -360,7 +339,6 @@
 
             $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_rat_alpha_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
               $( "#plot" ).empty().append( data2)
-
               // Function that gives effects to tab element
               var $tabButtonItem = $('#tab-button li'),
                   $tabSelect = $('#tab-select'),
@@ -389,10 +367,8 @@
                 $tabContents.hide();
                 $(target).show();
               });
-
             });
           }
-
           // Mean expression
           else if($("#ind_form input[id='meanexp']").is(':checked')) {
             let data = []
@@ -431,7 +407,6 @@
                 $tabContents.hide();
                 $(target).show();
               });
-
             });
           }
           // No function selected
@@ -442,22 +417,123 @@
 
         // Heatmap
         else if ($("#heatmap").is(':checked')) {
-          // Extraer los parámetros del análisis
-          console.log("heatmap activado")
-
           // Ratiometric rho
           if($("#heat_form input[id='heat_ratrho']").is(':checked')) {
-            console.log("heatmap ratiometric rho activado")
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#heat_rat_rho_form input").serializeArray())
+            data.push('HEATMAPRHO')
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#heat_rat_rho_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
           }
 
           // Ratiometric alpha
           else if($("#heat_form input[id='heat_ratalpha']").is(':checked')) {
-            console.log("heatmap ratiometric alpha activado")
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#heat_rat_alpha_form input").serializeArray())
+            data.push('HEATMAPALPHA')
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#heat_rat_alpha_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
           }
 
           // Mean expression
           else if($("#heat_form input[id='heat_meanexp']").is(':checked')) {
-            console.log("heatmap mean expression activado")
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#heat_mean_form input").serializeArray())
+            data.push('HEATMAPMEAN')
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#heat_mean_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
           }
           // No function selected
           else {
@@ -467,19 +543,48 @@
 
         // Kymograph
         else if ($("#kym").is(':checked')) {
-          // Extraer los parámetros del análisis
-          console.log("kym activado")
 
-          // No hay opciones, solo se deben extraer los parámetros
+          let data = []
+          data.push($("#vieneDeSearch input").serializeArray())
+          data.push($("#kym_form input").serializeArray())
+          data.push('KYMOGRAPH')
+          $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#kym_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+            $( "#plot" ).empty().append( data2)
+            // Function that gives effects to tab element
+            var $tabButtonItem = $('#tab-button li'),
+                $tabSelect = $('#tab-select'),
+                $tabContents = $('.tab-contents'),
+                activeClass = 'is-active';
+
+            $tabButtonItem.first().addClass(activeClass);
+            $tabContents.not(':first').hide();
+
+            $tabButtonItem.find('a').on('click', function(e) {
+              var target = $(this).attr('href');
+
+              $tabButtonItem.removeClass(activeClass);
+              $(this).parent().addClass(activeClass);
+              $tabSelect.val(target);
+              $tabContents.hide();
+              $(target).show();
+              e.preventDefault();
+            });
+            $tabSelect.on('change', function() {
+              var target = $(this).val(),
+                  targetSelectNum = $(this).prop('selectedIndex');
+
+              $tabButtonItem.removeClass(activeClass);
+              $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+              $tabContents.hide();
+              $(target).show();
+            });
+          });
         }
-
         // No selection
         else {
           alert("You must select an analysis option")
         }
       })
     </script>
-
-
   </body>
 </html>
