@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 import json
+from django.core import serializers
 
 from .models import Experiment, Sample, Dna, Vector, Measurement, Inducer
 from . import file_reader as fr

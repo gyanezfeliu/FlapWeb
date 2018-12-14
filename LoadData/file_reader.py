@@ -35,7 +35,7 @@ class MonkeyReader():
 
     def get_samps(d_query):
         if d_query['exp_name'] != '' and d_query['dna_name'] != '' and d_query['med_name'] != '' and d_query['str_name'] != '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           vector__dna__name__exact=d_query['dna_name'],
                                           media__exact=d_query['med_name'],
                                           strain__exact=d_query['str_name'])
@@ -67,34 +67,34 @@ class MonkeyReader():
             samps = Sample.objects.filter(strain__exact=d_query['str_name'])
 
         elif d_query['exp_name'] != '' and d_query['dna_name'] != '' and d_query['med_name'] != '' and d_query['str_name'] == '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           vector__dna__name__exact=d_query['dna_name'],
                                           media__exact=d_query['med_name'])
 
         elif d_query['exp_name'] != '' and d_query['dna_name'] != '' and d_query['med_name'] == '' and d_query['str_name'] != '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           vector__dna__name__exact=d_query['dna_name'],
                                           strain__exact=d_query['str_name'])
 
         elif d_query['exp_name'] != '' and d_query['dna_name'] != '' and d_query['med_name'] == '' and d_query['str_name'] == '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           vector__dna__name__exact=d_query['dna_name'])
 
         elif d_query['exp_name'] != '' and d_query['dna_name'] == '' and d_query['med_name'] != '' and d_query['str_name'] != '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           media__exact=d_query['med_name'],
                                           strain__exact=d_query['str_name'])
 
         elif d_query['exp_name'] != '' and d_query['dna_name'] == '' and d_query['med_name'] != '' and d_query['str_name'] == '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           media__exact=d_query['med_name'])
 
         elif d_query['exp_name'] != '' and d_query['dna_name'] == '' and d_query['med_name'] == '' and d_query['str_name'] != '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'],
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           strain__exact=d_query['str_name'])
 
         elif d_query['exp_name'] != '' and d_query['dna_name'] == '' and d_query['med_name'] == '' and d_query['str_name'] == '':
-            samps = Sample.objects.filter(experiment__name__exact=d_query['exp_name'])
+            samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'])
 
         # If no experiment, dna, media or strain selected
         #if d_query['exp_name'] == '' and d_query['dna_name'] == '' and d_query['med_name'] == '' and d_query['str_name'] == '':
@@ -144,17 +144,18 @@ class MonkeyReader():
             # By default it plots YFP vs RFP, should be able to change it interactively
             plt.plot(y, r, '.')
         plt.xlabel('Time (hours)')
-        plt.ylabel('Expression (AU)')
+        plt.ylabel('YFP/RFP Expression (AU)')
 
         fig2 = plt.figure()
         for s in samps:
             df = an.get_measurements(s)
-            er = an.expression_rate(df=df, mname='CFP', skip=20)
+            er = an.expression_rate(df=df, mname=d_query['mea_name'], skip=20)
+            # er = an.expression_rate(df=df, mname='CFP', skip=20)
             plt.plot(er)
-        plt.ylabel('Expression rate')
+        plt.ylabel("{} Expression rate".format(d_query['mea_name']))
         plt.xlabel('Time (hours)')
 
-        return [fig_to_html(fig1), fig_to_html(fig2)];
+        return [fig_to_html(fig2), fig_to_html(fig1)];
 
     def analysis_induction(request):
         analysis_type = request.POST['param1[]']
