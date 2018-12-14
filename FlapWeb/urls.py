@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.conf.urls import include
 from LoadData import views
+
+# TEMPLATE URLS!
+# app_name = 'LoadData'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +33,10 @@ urlpatterns = [
     path('monkey/upload', views.index),
     path('monkey/massupload', views.massUpload),
     path('monkey/plot', views.plot),
-    path('', views.home)
+    ###### Para login
+    path('LoadData/', include('LoadData.urls')),
+    path('logout/', views.user_logout, name='logout'),
+    path('special/', views.special, name='special'),
+    ######
+    path('', views.home, name='home')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
