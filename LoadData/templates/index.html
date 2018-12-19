@@ -12,6 +12,10 @@
   #tblData input{
     width: 120%;
   }
+  #tblData input.overizado{
+    border: 2px solid red;
+  }
+
   </style>
 
   <title>Upload data</title>
@@ -31,6 +35,10 @@
           <li class="page-item disabled"><a class="page-link" href="#">DNA</a></li>
         </ul>
       </nav>
+
+      <button id='btn'>Seleccion múltiple</button>
+      <input type="hidden" id="val-inp">
+      <button id='btn-val' class="d-none">Asignar valor</button>
 
       <table class="table table-hover" id="tblData">
         <thead class="thead-light">
@@ -199,6 +207,27 @@
 
   $(document).ready(function(){
     let data = []
+    ////////////////
+
+    var _sw = false;
+    $("#btn").on("click", () => {
+      _sw=true
+      $("#val-inp").attr('type', 'text');
+      $("#btn-val").attr('class', '');
+    })
+
+    $("#tblData input").on("mouseover", function(){if(_sw) $(this).toggleClass("overizado")});
+
+    $("#btn-val").on("click", () => {
+      $("input.overizado").val($("#val-inp").val());
+      $("#tblData input").removeClass('overizado')
+      $("#val-inp").val('')
+      $("#val-inp").attr('data-flag', '0');
+      $("#val-inp").attr('type', 'hidden');
+      _sw=false
+    })
+
+    ////////////////
 
     $("#tblData input").each((idx, item)=>{item.name='data'})
     $("#btnNext").on("click", ()=>{
