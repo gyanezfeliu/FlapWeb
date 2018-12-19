@@ -4,7 +4,7 @@ import json
 from django.core import serializers
 from .models import Experiment, Sample, Dna, Vector, Measurement, Inducer
 from . import file_reader as fr
-from .forms import UploadFileForm, UserForm, UserProfileInfoForm
+from .forms import UploadFileForm, UserForm, UserProfileInfoForm, SearchForm
 
 # FOR LOGIN
 from django.contrib.auth import authenticate, login, logout
@@ -40,7 +40,13 @@ def index(request):
     return render(request, 'index.html', {})
 
 def search(request):
-    return render(request, 'search.html', {})
+    form = SearchForm()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid:
+            pass
+    return render(request, 'search.html', {'form': form})
+    # return render(request, 'search.html', {})
 
 def plot(request):
     to_show = fr.MonkeyReader.plot(request)
@@ -140,3 +146,12 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied!")
     else:
         return render(request, 'login.html', {})
+
+def show_search(request):
+    form = SearchForm()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid:
+            pass
+    # return render(request, 'search.html', {'form': form})
+    return render(request, 'test_form.html', {'form': form})

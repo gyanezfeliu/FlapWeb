@@ -34,6 +34,21 @@ class MonkeyReader():
         subprocess.Popen(['python', 'manage.py', 'runscript', 'massiveUpload'], stdout=subprocess.PIPE)
 
     def get_samps(d_query):
+
+        if d_query['exp_name'] != '':
+            d_query['exp_name'] = Experiment.objects.get(id=int(d_query['exp_name'])).name
+        if d_query['dna_name'] != '':
+            d_query['dna_name'] = Dna.objects.get(id=int(d_query['dna_name'])).name
+        if d_query['med_name'] != '':
+            d_query['med_name'] = Sample.objects.get(id=int(d_query['med_name'])).media
+        if d_query['str_name'] != '':
+            d_query['str_name'] = Sample.objects.get(id=int(d_query['str_name'])).strain
+        if d_query['ind_name'] != '':
+            d_query['ind_name'] = Inducer.objects.get(id=int(d_query['ind_name'])).pubchemid
+        if d_query['mea_name'] != '':
+            d_query['mea_name'] = Measurement.objects.get(id=int(d_query['mea_name'])).name
+
+
         if d_query['exp_name'] != '' and d_query['dna_name'] != '' and d_query['med_name'] != '' and d_query['str_name'] != '':
             samps = Sample.objects.filter(experiment__name__iexact=d_query['exp_name'],
                                           vector__dna__name__exact=d_query['dna_name'],
@@ -143,8 +158,8 @@ class MonkeyReader():
 
             # By default it plots YFP vs RFP, should be able to change it interactively
             plt.plot(y, r, '.')
-        plt.xlabel('Time (hours)')
-        plt.ylabel('YFP/RFP Expression (AU)')
+        plt.xlabel('RFP Expression (AU)')
+        plt.ylabel('YFP Expression (AU)')
 
         fig2 = plt.figure()
         for s in samps:
@@ -162,12 +177,18 @@ class MonkeyReader():
 
         dict_query = json.loads(request.POST['param1[0][1][value]'])
         d_query = {}
-        d_query['exp_name'] = dict_query['posts']['exp_name']
-        d_query['dna_name'] = dict_query['posts']['dna_name']
-        d_query['med_name'] = dict_query['posts']['med_name']
-        d_query['str_name'] = dict_query['posts']['str_name']
-        d_query['ind_name'] = dict_query['posts']['ind_name']
-        d_query['mea_name'] = dict_query['posts']['mea_name']
+        # d_query['exp_name'] = dict_query['posts']['exp_name']
+        # d_query['dna_name'] = dict_query['posts']['dna_name']
+        # d_query['med_name'] = dict_query['posts']['med_name']
+        # d_query['str_name'] = dict_query['posts']['str_name']
+        # d_query['ind_name'] = dict_query['posts']['ind_name']
+        # d_query['mea_name'] = dict_query['posts']['mea_name']
+        d_query['exp_name'] = dict_query['posts']['experiment']
+        d_query['dna_name'] = dict_query['posts']['dna']
+        d_query['med_name'] = dict_query['posts']['media']
+        d_query['str_name'] = dict_query['posts']['strain']
+        d_query['ind_name'] = dict_query['posts']['inducer']
+        d_query['mea_name'] = dict_query['posts']['measurement_name']
 
         if analysis_type == "INDUCTIONRHO" or analysis_type == "INDUCTIONALPHA":
             bounds_min = [int(request.POST['param1[1][1][value]']),
@@ -220,12 +241,18 @@ class MonkeyReader():
 
         dict_query = json.loads(request.POST['param1[0][1][value]'])
         d_query = {}
-        d_query['exp_name'] = dict_query['posts']['exp_name']
-        d_query['dna_name'] = dict_query['posts']['dna_name']
-        d_query['med_name'] = dict_query['posts']['med_name']
-        d_query['str_name'] = dict_query['posts']['str_name']
-        d_query['ind_name'] = dict_query['posts']['ind_name']
-        d_query['mea_name'] = dict_query['posts']['mea_name']
+        # d_query['exp_name'] = dict_query['posts']['exp_name']
+        # d_query['dna_name'] = dict_query['posts']['dna_name']
+        # d_query['med_name'] = dict_query['posts']['med_name']
+        # d_query['str_name'] = dict_query['posts']['str_name']
+        # d_query['ind_name'] = dict_query['posts']['ind_name']
+        # d_query['mea_name'] = dict_query['posts']['mea_name']
+        d_query['exp_name'] = dict_query['posts']['experiment']
+        d_query['dna_name'] = dict_query['posts']['dna']
+        d_query['med_name'] = dict_query['posts']['media']
+        d_query['str_name'] = dict_query['posts']['strain']
+        d_query['ind_name'] = dict_query['posts']['inducer']
+        d_query['mea_name'] = dict_query['posts']['measurement_name']
 
         if analysis_type == "HEATMAPRHO" or analysis_type == "HEATMAPALPHA":
             bounds_min = [int(request.POST['param1[1][1][value]']),
@@ -267,12 +294,19 @@ class MonkeyReader():
 
         dict_query = json.loads(request.POST['param1[0][1][value]'])
         d_query = {}
-        d_query['exp_name'] = dict_query['posts']['exp_name']
-        d_query['dna_name'] = dict_query['posts']['dna_name']
-        d_query['med_name'] = dict_query['posts']['med_name']
-        d_query['str_name'] = dict_query['posts']['str_name']
-        d_query['ind_name'] = dict_query['posts']['ind_name']
-        d_query['mea_name'] = dict_query['posts']['mea_name']
+        # d_query['exp_name'] = dict_query['posts']['exp_name']
+        # d_query['dna_name'] = dict_query['posts']['dna_name']
+        # d_query['med_name'] = dict_query['posts']['med_name']
+        # d_query['str_name'] = dict_query['posts']['str_name']
+        # d_query['ind_name'] = dict_query['posts']['ind_name']
+        # d_query['mea_name'] = dict_query['posts']['mea_name']
+
+        d_query['exp_name'] = dict_query['posts']['experiment']
+        d_query['dna_name'] = dict_query['posts']['dna']
+        d_query['med_name'] = dict_query['posts']['media']
+        d_query['str_name'] = dict_query['posts']['strain']
+        d_query['ind_name'] = dict_query['posts']['inducer']
+        d_query['mea_name'] = dict_query['posts']['measurement_name']
 
         skip = int(request.POST['param1[1][1][value]'])
         mname = request.POST['param1[1][2][value]']

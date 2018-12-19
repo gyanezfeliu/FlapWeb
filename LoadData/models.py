@@ -44,8 +44,8 @@ class Inducer(models.Model):
     concentration = models.FloatField()
     pubchemid = models.TextField()
 
-    def __self__(self):
-        return self.pubchemib
+    def __str__(self):
+        return self.pubchemid
 
 class LoadProcess(models.Model):
     content = models.TextField()

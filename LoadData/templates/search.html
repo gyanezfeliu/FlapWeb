@@ -17,7 +17,9 @@
           <h2>Start your search</h2>
           <form id="schForm" action="analysis" method="post">
             {% csrf_token %}
-            Experiment<br>
+
+            {{form.as_p}}
+            <!-- Experiment<br>
             <input type="text" name="exp_name" placeholder=""><br>
             DNA<br>
             <input type="text" name="dna_name"><br>
@@ -28,7 +30,7 @@
             Inducer<br>
             <input type="text" name="ind_name"><br>
             Measurement name<br>
-            <input type="text" name="mea_name" placeholder=""><br>
+            <input type="text" name="mea_name" placeholder=""><br> -->
 
             <button id="subPlot" type="button" name="button">Plot</button>
             <button id="subAnalyse" type="submit" name="button">Analyse</button>
@@ -54,7 +56,8 @@
 
         $("#subPlot").on("click", () => {
           let data = []
-          data.push($("#schForm input").serializeArray())
+          // data.push($("#schForm input").serializeArray())
+          data.push($("#schForm").serializeArray())
           $.post('/monkey/plot', {param1: data, csrfmiddlewaretoken: $("#schForm input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
             $( "#plot" ).empty().append( data2)
 

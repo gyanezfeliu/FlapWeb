@@ -38,5 +38,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('special/', views.special, name='special'),
     ######
+    path('exp/', views.show_search),
     path('', views.home, name='home')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
