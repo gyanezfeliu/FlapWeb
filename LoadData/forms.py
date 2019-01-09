@@ -28,9 +28,9 @@ class StrainModelChoiceField(ModelChoiceField):
         return "{}".format(obj.strain)
 
 class SearchForm(forms.Form):
-    experiment = forms.ModelChoiceField(queryset=Experiment.objects.all().order_by('name'), empty_label="", required=False)
-    dna = forms.ModelChoiceField(queryset=Dna.objects.all().order_by('name'), empty_label="", required=False)
-    media = MediaModelChoiceField(queryset=Sample.objects.distinct('media'), empty_label="", required=False)
-    strain = StrainModelChoiceField(queryset=Sample.objects.distinct('strain'), empty_label="", required=False)
-    inducer = forms.ModelChoiceField(queryset=Inducer.objects.distinct('pubchemid'), empty_label="", required=False)
-    measurement_name = forms.ModelChoiceField(queryset=Measurement.objects.distinct('name'), empty_label="", required=False)
+    experiment = forms.ModelChoiceField(queryset=Experiment.objects.all().order_by('name'), empty_label="All", required=False)
+    dna = forms.ModelChoiceField(queryset=Dna.objects.all().order_by('name'), empty_label="All", required=False)
+    media = MediaModelChoiceField(queryset=Sample.objects.distinct('media'), empty_label="All", required=False)
+    strain = StrainModelChoiceField(queryset=Sample.objects.distinct('strain'), empty_label="All", required=False)
+    inducer = forms.ModelChoiceField(queryset=Inducer.objects.distinct('pubchemid'), empty_label="All", required=False)
+    measurement_name = forms.ModelChoiceField(queryset=Measurement.objects.distinct('name'), empty_label="All", required=False)

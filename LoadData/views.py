@@ -40,13 +40,8 @@ def index(request):
     return render(request, 'index.html', {})
 
 def search(request):
-    form = SearchForm()
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid:
-            pass
+    form = show_search(request)
     return render(request, 'search.html', {'form': form})
-    # return render(request, 'search.html', {})
 
 def plot(request):
     to_show = fr.MonkeyReader.plot(request)
@@ -153,5 +148,4 @@ def show_search(request):
         form = SearchForm(request.POST)
         if form.is_valid:
             pass
-    # return render(request, 'search.html', {'form': form})
-    return render(request, 'test_form.html', {'form': form})
+    return form
