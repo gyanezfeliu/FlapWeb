@@ -214,7 +214,7 @@ def upload_data(e, dict_meta, df_cons, columns):
                 i = Inducer(sample=s, concentration=conc, pubchemid=ind_name)
                 i.save()
 
-        # Data value for earch well
+        # Data value for each well
         for i, val in enumerate(df_cons[row+str(col)]):
             m_name = df_cons['name'].iloc[i]
             m_value = val

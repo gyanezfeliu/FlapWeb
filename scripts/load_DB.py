@@ -10,7 +10,18 @@ from itertools import islice
 import csv
 import subprocess
 
-#print(sys.argv)
+def fix_synergy_time(df):
+    t = np.array([])
+    for i, value in enumerate(df['Time']):
+        if i > 0:
+            if df['Time'].iloc[i].hour < df['Time'].iloc[i-1].hour:
+                t = np.append(t, [24 + value.hour + value.minute/60 + value.second/3600])
+            else:
+                t = np.append(t, [value.hour + value.minute/60 + value.second/3600])
+        else:
+            t = np.append(t, [value.hour + value.minute/60 + value.second/3600])
+    df['Time'] = t
+
 def run(*args):
 
     id_data = int(args[0])
@@ -19,7 +30,6 @@ def run(*args):
 
     # Cargo Metadata
 
-    #data_str = open(metadata).read()
     data = json.loads(metadata)
     df_json = pd.DataFrame(data)
     columns = [x+str(y) for x in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] for y in range(1,13)]
@@ -41,7 +51,7 @@ def run(*args):
                 for celda in ws['A']
                 if celda.value in medidas]
 
-    ws.delete_rows(0, 48)
+    ws.delete_rows(0, lista_rows[0][1] + 1)
 
     lista_rows2 = [(celda.value, celda.row, opxl.utils.column_index_from_string(celda.column))
                 for celda in ws['A']
@@ -54,27 +64,27 @@ def run(*args):
     data = (islice(r, 1, None) for r in data)
     df = pd.DataFrame(data, columns=cols)
 
-    df.columns = df.columns.map(lambda x: x.replace('T° OD600:600', 'T°'))
+    df = df.drop('T° OD600:600', axis=1)
 
     df_OD = pd.DataFrame(df.iloc[0:lista_rows2[0][1] - 3])
     df_OD['name'] = 'OD'
+    fix_synergy_time(df_OD)
+    df_OD.index = range(97)
 
     df_RFP = pd.DataFrame(df.iloc[lista_rows2[0][1] + 1:lista_rows2[1][1] - 3])
     df_RFP['name'] = 'RFP'
+    fix_synergy_time(df_RFP)
     df_RFP.index = range(97)
 
     df_YFP = pd.DataFrame(df.iloc[lista_rows2[1][1] + 1:lista_rows2[2][1] - 3])
     df_YFP['name'] = 'YFP'
+    fix_synergy_time(df_YFP)
     df_YFP.index = range(97)
 
     df_CFP = pd.DataFrame(df.iloc[lista_rows2[2][1] + 1:lista_rows2[3][1] - 3])
     df_CFP['name'] = 'CFP'
+    fix_synergy_time(df_CFP)
     df_CFP.index = range(97)
-
-    df_OD = df_OD.drop([96])
-    df_RFP = df_RFP.drop([96])
-    df_YFP = df_YFP.drop([96])
-    df_CFP = df_CFP.drop([96])
 
     dfs = [df_OD, df_RFP, df_YFP, df_CFP]
 
