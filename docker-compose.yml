@@ -10,7 +10,7 @@ services:
     depends_on:
       - pg_flap
     ports:
-      - 7777:7777
+      - 8888:8888
     environment:
       FLAP_DATABASE_HOST: pg_flap
       FLAP_DATABASE_PORT: 4444 #5432
@@ -19,7 +19,7 @@ services:
 
     volumes:
       - .:/var/app/flap
-    command: gunicorn --reload -b 0.0.0.0:7777 FlapWeb.wsgi
+    command: gunicorn --reload -b 0.0.0.0:8888 FlapWeb.wsgi
 
   pg_flap:
     container_name: pg_flap
