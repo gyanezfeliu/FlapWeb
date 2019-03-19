@@ -24,6 +24,7 @@ def leer(request):
     })
 
     fr.MonkeyReader.loadSynergy(request.POST['dataFull'], request.FILES['dataFile'].name)
+    # Muestra este mensaje en la pantalla, se debe redireccionar
     return HttpResponse(data, content_type='application/json')
 
 def massUpload(request):

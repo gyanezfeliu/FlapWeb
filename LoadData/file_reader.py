@@ -19,8 +19,6 @@ from mpld3.plugins import PointLabelTooltip
 
 from . import analysis as an
 
-#Leo el archivo y saco la información del archivo
-# Asumiré que ya lo hice
 class MonkeyReader():
 
     def loadSynergy(metadata, file_name):
