@@ -29,7 +29,6 @@ def run(*args):
     file_route = LoadProcess.objects.get(id=id_data).file
 
     # Cargo Metadata
-
     data = json.loads(metadata)
     df_json = pd.DataFrame(data)
     columns = [x+str(y) for x in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] for y in range(1,13)]
@@ -129,7 +128,6 @@ def run(*args):
             for i, value in enumerate(df[col_name]):
                 nam = df['name'].iloc[i]
                 val = value
-                #t = df['Time'].iloc[i]
-                t = i
+                t = df['Time'].iloc[i]
                 m = Measurement(sample=s, name=nam, value=val, time=t)
                 m.save()

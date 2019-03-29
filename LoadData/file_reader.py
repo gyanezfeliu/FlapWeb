@@ -19,6 +19,7 @@ from mpld3.plugins import PointLabelTooltip
 
 from . import analysis as an
 
+# No sé si esta clase es necesaria
 class MonkeyReader():
 
     def loadSynergy(metadata, file_name):
@@ -27,6 +28,8 @@ class MonkeyReader():
         lp = LoadProcess(content=metadata, file=file_route)
         lp.save()
         subprocess.Popen(['python', 'manage.py', 'runscript', 'load_DB', '--script-args', str(lp.id)], stdout=subprocess.PIPE)
+        
+        #Luego eliminar metadata y file_route de la tabla LoadProcess
 
     def massUpload():
         subprocess.Popen(['python', 'manage.py', 'runscript', 'massiveUpload'], stdout=subprocess.PIPE)
