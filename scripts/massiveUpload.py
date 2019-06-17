@@ -141,6 +141,15 @@ def load_bmg_data(ws, columns):
     return df_cons
 
 def load_synergy_data(medidas, ws):
+
+    # Generate measurement names from spreadsheet
+    vals = []
+    for celda in ws['A']:
+        vals.append(celda.value)
+    vals2 = np.array(vals[vals.index('End Kinetic')+2:])
+    ind = np.where(vals2 != None)[0]+vals.index('End Kinetic')+2
+    medidas = [ws['A'][i].value for i in ind]
+
     rows_ini = lista_rows(ws, medidas)
     ws.delete_rows(0, rows_ini[0][1] + 1)
     rows = lista_rows(ws, medidas)
@@ -152,8 +161,12 @@ def load_synergy_data(medidas, ws):
     data = (islice(r, 1, None) for r in data)
     df = pd.DataFrame(data, columns=cols)
     df = df.drop('T° OD600:600', axis=1)
+    
+    # Para Maca
+    name_map = {'OD600:600':'OD', 'RFP-YFP:500/27,540/25':'YFP', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP', 'RFP-YFP:585/10,620/15':'RFP'}
+    # Para Isaac
+    #name_map = {'OD600:600':'OD', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP'}
 
-    name_map = {'OD600:600':'OD', 'RFP-YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP', 'RFP-YFP:585/10,620/15':'RFP'}
     names = [name_map[rows_ini[i][0]] for i in range(len(rows_ini)-1)]
 
     df_cons = clean_synergy_data(names, df, rows)
@@ -249,7 +262,10 @@ def load_from_file(route, file_format, columns, medidas):
             pass
 
 columns = [x+str(y) for x in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] for y in range(1,13)]
+# Para Maca
 medidas = ['OD600:600', 'RFP-YFP:585/10,620/15', 'RFP-YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
+# Para Isaac
+#medidas = ['OD600:600', 'YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
 
 load_from_file('uploads/datafiles/bmg/to_upload/', 'bmg', columns, medidas)
 load_from_file('uploads/datafiles/synergy/to_upload/', 'synergy', columns, medidas)

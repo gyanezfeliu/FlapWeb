@@ -11,6 +11,7 @@ import os
 import openpyxl as opxl
 from itertools import islice
 import csv
+import heapq
 import subprocess
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
@@ -155,12 +156,15 @@ class MonkeyReader():
             df = an.get_measurements(s)
             y = df[df['name']=='YFP']['value']
             c = df[df['name']=='CFP']['value']
-            r = df[df['name']=='RFP']['value']
+            # Para isaac
+            #r = df[df['name']=='RFP']['value']
 
             # By default it plots YFP vs RFP, should be able to change it interactively
-            plt.plot(y, r, '.')
-        plt.xlabel('RFP Expression (AU)')
-        plt.ylabel('YFP Expression (AU)')
+            plt.plot(y, c, '.')
+        #plt.xlabel('RFP Expression (AU)')
+        # Para isaac
+        plt.xlabel('CFP Expression (AU)', fontsize=17)
+        plt.ylabel('YFP Expression (AU)', fontsize=17)
 
         fig2 = plt.figure()
         for s in samps:
@@ -168,8 +172,8 @@ class MonkeyReader():
             er = an.expression_rate(df=df, mname=d_query['mea_name'], skip=20)
             # er = an.expression_rate(df=df, mname='CFP', skip=20)
             plt.plot(er)
-        plt.ylabel("{} Expression rate".format(d_query['mea_name']))
-        plt.xlabel('Time (hours)')
+        plt.ylabel("{} Expression rate".format(d_query['mea_name']), fontsize=20)
+        plt.xlabel('Time (hours)', fontsize=20)
 
         return [fig_to_html(fig2), fig_to_html(fig1)];
 
@@ -217,23 +221,49 @@ class MonkeyReader():
             concs,my = an.induction_curve(samps, an.mean_expression, mname=mname1)
 
         fig1 = plt.figure()
-        plt.plot(np.log10(concs), my, '.')
+
+        # To adjust position of concentration 0 of inducer
+        concs_log = np.log10(concs)
+        mins = heapq.nsmallest(3, np.unique(concs_log))
+        minim = mins[0]
+        if mins[0] == -np.inf:
+            dist = mins[2] - mins[1]
+            minim = mins[1]
+        else:
+            dist = mins[1] - mins[0]
+        if minim < 0:
+            concs_log[concs_log == -np.inf] = minim - dist
+        else:
+            concs_log[concs_log == -np.inf] = 0
+            #concs_log[concs_log == -np.inf] = minim - dist
+
+
+        plt.plot(concs_log, my, '.')
         plt.xlabel("log({} conc.) (M)".format(d_query['ind_name']))
         plt.ylabel('Mean fluorescence (AU)')
 
         #### CURVE FIT
-        z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
+        #z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
+        # Para Isaac
+        print(concs)
+        z,_= curve_fit(an.hill, concs, my)#, bounds=([0,0,0,1],[1,1,1e-2,2]))
+
+        
         a = z[0]
         b = z[1]
         k = z[2]
         n = z[3]
 
-        x = np.linspace(-6,-2,200)
+        #TUNING
+        x = np.linspace(np.nanmin(concs_log[concs_log != -np.inf]),np.max(concs_log),200)
+        #x = np.linspace(np.min(concs_log),np.max(concs_log),200)
+        #x = np.linspace(-1.0,3.0,100)
         fig2 = plt.figure()
-        plt.plot(x, an.hill(10**x,a,b,k,n), '-.')
-        plt.plot(np.log10(concs),my,'r.')
-        plt.xlabel("log({} conc.) (M)".format(d_query['ind_name']))
-        plt.ylabel('Mean fluorescence (AU)')
+        curve = an.hill(10**x,a,b,k,n)
+        plt.plot(x, curve, '-.', linewidth=5)
+        plt.plot(concs_log, my,'r.')
+        plt.xlabel("log({} conc.) (uM)".format(d_query['ind_name']), fontsize=25)
+        plt.ylabel('Fluorescence ratio', fontsize=20)
 
         return [fig_to_html(fig1), fig_to_html(fig2)];
 
