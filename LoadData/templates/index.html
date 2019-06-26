@@ -1,4 +1,4 @@
-{% extends 'base_new.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% block header_content %}
@@ -25,8 +25,11 @@
       </ul>
     </nav>
 
-    <input type="text" id="val-inp">
-    <button id='btn-val'>Assign value</button>
+    <div>
+      <input type="text" id="val-inp">
+      <button id='btn-val'>Assign value</button>
+      <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Siguiente</button>
+  </div>
 
     <main>
       <section class="sec demo">
@@ -176,7 +179,7 @@
       </section>
     </main>
 
-    <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Siguiente</button>
+    <!-- <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Siguiente</button> -->
 
   </div>
 

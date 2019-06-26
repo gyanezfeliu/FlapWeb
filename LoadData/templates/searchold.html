@@ -1,0 +1,114 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Search</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  </head>
+  
+  <body>
+    <br/><br/>
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <h2>Start your search</h2>
+          <form id="schForm" action="analysis" method="post">
+            {% csrf_token %}
+
+            {{form.as_p}}
+            <!-- Experiment<br>
+            <input type="text" name="exp_name" placeholder=""><br>
+            DNA<br>
+            <input type="text" name="dna_name"><br>
+            Media<br>
+            <input type="text" name="med_name"><br>
+            Strain<br>
+            <input type="text" name="str_name"><br>
+            Inducer<br>
+            <input type="text" name="ind_name"><br>
+            Measurement name<br>
+            <input type="text" name="mea_name" placeholder=""><br> -->
+
+            <button id="subPlot" type="button" name="button">Plot</button>
+            <button id="subAnalyse" type="submit" name="button">Analyse</button>
+          </form>
+        </div>
+        <div id="plot" class="col-8">
+
+        </div>
+      </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    
+    <script>
+
+      $ = jQuery.noConflict();
+
+      $(document).ready(function() {
+
+        $('#schForm').on("change", () => {
+          let data = []
+          data.push($("#schForm").serializeArray())
+          // CAMBIAR PARA QUE VAYA A REDIBUJAR EL FORMULARIO
+          // $.post('/monkey/plot', {param1: data, csrfmiddlewaretoken: $("#schForm input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+          //   $("#schForm").empty().append( data2)
+          // });
+          console.log("Cambio")
+        })
+
+        $("#subPlot").on("click", () => {
+          let data = []
+          // data.push($("#schForm input").serializeArray())
+          data.push($("#schForm").serializeArray())
+          $.post('/monkey/plot', {param1: data, csrfmiddlewaretoken: $("#schForm input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+            $("#plot").empty().append( data2)
+
+            // Function that gives effects to tab element
+            var $tabButtonItem = $('#tab-button li'),
+                $tabSelect = $('#tab-select'),
+                $tabContents = $('.tab-contents'),
+                activeClass = 'is-active';
+
+            $tabButtonItem.first().addClass(activeClass);
+            $tabContents.not(':first').hide();
+
+            $tabButtonItem.find('a').on('click', function(e) {
+              var target = $(this).attr('href');
+
+              $tabButtonItem.removeClass(activeClass);
+              $(this).parent().addClass(activeClass);
+              $tabSelect.val(target);
+              $tabContents.hide();
+              $(target).show();
+              e.preventDefault();
+            });
+            $tabSelect.on('change', function() {
+              var target = $(this).val(),
+                  targetSelectNum = $(this).prop('selectedIndex');
+
+              $tabButtonItem.removeClass(activeClass);
+              $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+              $tabContents.hide();
+              $(target).show();
+            });
+
+          });
+        })
+
+        // NO SIRVE
+        $("#subAnalyse").on("click", () => {
+          let data = []
+          data.push($("#schForm input").serializeArray())
+        })
+      })
+    </script>
+
+  </body>
+</html>

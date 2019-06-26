@@ -1,0 +1,590 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'to_plot.css' %}">
+
+    <style media="screen">
+      input[type=text]{
+        width: 100px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <br/><br/>
+
+
+    <form id="vieneDeSearch" class="" action="" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="dataSearch" value="{{ from_search }}">
+    </form>
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+
+          <h3>Select your analysis</h3>
+
+          <!-- Analysis form -->
+          <form id="analysis_form" class="" action="" method="post">
+            <input id="indcur" type="radio" name="analysis" value="ind_curve">
+            <label for="indcur">Induction curve</label><br>
+
+            <input id="heatmap" type="radio" name="analysis" value="heatmap">
+            <label for="heatmap">Heatmap</label><br>
+
+            <input id="kym" type="radio" name="analysis" value="kymograph">
+            <label for="kym">Kymograph</label><br>
+
+          </form>
+
+          <!-- Induction curve form -->
+          <form id="ind_form" class="d-none" action="" method="">
+            <h5>Choose the function for the induction curve</h5>
+            <input id="ratrho" type="radio" name="induction" value="rat_rho">
+            <label for="ratrho">Ratiometric rho</label><br>
+
+            <input id="ratalpha" type="radio" name="induction" value="rat_alpha">
+            <label for="ratalpha">Ratiometric alpha</label><br>
+
+            <input id="meanexp" type="radio" name="induction" value="mean_exp">
+            <label for="meanexp">Mean expression</label><br>
+          </form>
+
+          <!-- Ratiometric rho form -->
+          <form id="ind_rat_rho_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Ratiometric rho parameters</h5>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+            Measurement name 1 (mname1)
+            <input type="text" name="mname1" value=""><br>
+            Meaurement name 2 (mname2)
+            <input type="text" name="mname2" value=""><br>
+
+          </form>
+
+          <!-- Ratiometric alpha form -->
+          <form id="ind_rat_alpha_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Ratiometric alpha parameters</h5>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+            Measurement name (mname)
+            <input type="text" name="mname1" value=""><br>
+          </form>
+
+          <!-- Mean expression form -->
+          <form id="ind_mean_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Mean expression parameters</h5>
+            Measurement name (mname)
+            <input type="text" name="mname1" value="">
+          </form>
+
+
+          <!-- Heatmap form -->
+          <form id="heat_form" class="d-none" action="" method="">
+            <h5>Choose the function for Heatmap</h5>
+            <input id="heat_ratrho" type="radio" name="induction" value="rat_rho">
+            <label for="heat_ratrho">Ratiometric rho</label><br>
+
+            <input id="heat_ratalpha" type="radio" name="induction" value="rat_alpha">
+            <label for="heat_ratalpha">Ratiometric alpha</label><br>
+
+            <input id="heat_meanexp" type="radio" name="induction" value="mean_exp">
+            <label for="heat_meanexp">Mean expression</label><br>
+          </form>
+
+          <!-- Ratiometric rho form -->
+          <form id="heat_rat_rho_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Ratiometric rho parameters</h5>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+            Criteria to bin by (nbins)
+            <input type="text" name="nbins" value=""><br>
+            Measurement name 1 (mname1)
+            <input type="text" name="mname1" value=""><br>
+            Meaurement name 2 (mname2)
+            <input type="text" name="mname2" value=""><br>
+          </form>
+
+          <!-- Ratiometric alpha form -->
+          <form id="heat_rat_alpha_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Ratiometric alpha parameters</h5>
+            Gompertz min and max values <br>
+            Min
+            <input type="text" name="min1" value="">
+            <input type="text" name="min2" value="">
+            <input type="text" name="min3" value=""><br>
+            Max
+            <input type="text" name="max1" value="">
+            <input type="text" name="max2" value="">
+            <input type="text" name="max3" value=""><br>
+            Number of doubling times (ndt)
+            <input type="text" name="ndt" value=""><br>
+            Criteria to bin by (nbins)
+            <input type="text" name="nbins" value=""><br>
+            Measurement name (mname)
+            <input type="text" name="mname1" value=""><br>
+          </form>
+
+          <!-- Mean expression form -->
+          <form id="heat_mean_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Mean expression parameters</h5>
+            Criteria to bin by (bin)
+            <input type="text" name="bin" value=""><br>
+            Measurement name 1 (mname1)
+            <input type="text" name="mname1" value=""><br>
+          </form>
+
+          <!-- Kymograph form -->
+          <form id="kym_form" class="d-none" action="" method="">
+            {% csrf_token %}
+            <h5>Kymograph parameters</h5>
+            Skip (skip)
+            <input type="text" name="skip" value=""><br>
+            Measurement name 1 (mname1)
+            <input type="text" name="mname1" value="">
+          </form>
+
+          <br>
+          <input id="analyse" type="submit" name="" value="Analyse"><br>
+        </div>
+
+        <div id="plot" class="col-8">
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+    <script>
+    $ = jQuery.noConflict();
+
+    $(document).ready(function() {
+
+      // INDUCTION CURVE
+      $("#analysis_form input[id='indcur']").on("click", () => {
+        $("#ind_form").removeClass("d-none")
+        $("#heat_form").addClass("d-none")
+        $("#kym_form").addClass("d-none")
+
+        // Make heatmap forms dissapear
+        $("#heat_rat_rho_form").addClass("d-none")
+        $("#heat_rat_alpha_form").addClass("d-none")
+        $("#heat_mean_form").addClass("d-none")
+      })
+
+      // HEATMAP
+      $("#analysis_form input[id='heatmap']").on("click", () => {
+        $("#ind_form").addClass("d-none")
+        $("#heat_form").removeClass("d-none")
+        $("#kym_form").addClass("d-none")
+
+        // Make induction curve forms dissapear
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
+      })
+
+      // KYMOGRAPH
+      $("#analysis_form input[id='kym']").on("click", () => {
+        $("#ind_form").addClass("d-none")
+        $("#heat_form").addClass("d-none")
+        $("#kym_form").removeClass("d-none")
+
+        // Make induction curve forms dissapear
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
+
+        // Make heatmap forms dissapear
+        $("#heat_rat_rho_form").addClass("d-none")
+        $("#heat_rat_alpha_form").addClass("d-none")
+        $("#heat_mean_form").addClass("d-none")
+      })
+
+      // INDUCTION CURVE FUNCTIONS
+      // Check if ratiometric rho selected
+      $("#ind_form input[id='ratrho']").on("click", () => {
+        $("#ind_rat_rho_form").removeClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
+      })
+      // Check if ratiometric alpha selected
+      $("#ind_form input[id='ratalpha']").on("click", () => {
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").removeClass("d-none")
+        $("#ind_mean_form").addClass("d-none")
+      })
+      // Check if mean expression selected
+      $("#ind_form input[id='meanexp']").on("click", () => {
+        $("#ind_rat_rho_form").addClass("d-none")
+        $("#ind_rat_alpha_form").addClass("d-none")
+        $("#ind_mean_form").removeClass("d-none")
+      })
+
+      // HEATMAP FUNCTIONS
+      // Check if ratiometric rho selected
+      $("#heat_form input[id='heat_ratrho']").on("click", () => {
+        $("#heat_rat_rho_form").removeClass("d-none")
+        $("#heat_rat_alpha_form").addClass("d-none")
+        $("#heat_mean_form").addClass("d-none")
+      })
+      // Check if ratiometric alpha selected
+      $("#heat_form input[id='heat_ratalpha']").on("click", () => {
+        $("#heat_rat_rho_form").addClass("d-none")
+        $("#heat_rat_alpha_form").removeClass("d-none")
+        $("#heat_mean_form").addClass("d-none")
+      })
+      // Check if mean expression selected
+      $("#heat_form input[id='heat_meanexp']").on("click", () => {
+        $("#heat_rat_rho_form").addClass("d-none")
+        $("#heat_rat_alpha_form").addClass("d-none")
+        $("#heat_mean_form").removeClass("d-none")
+      })
+
+    })
+      // Analysis
+      // By pressing Analyse button, extraction of data is made
+      $("#analyse").on("click", () => {
+        // Induction Curve
+        if($("#indcur").is(':checked')) {
+          // Ratiometric rho
+          if($("#ind_form input[id='ratrho']").is(':checked')) {
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#ind_rat_rho_form input").serializeArray())
+            data.push('INDUCTIONRHO')
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_rat_rho_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
+          }
+          // Ratiometric alpha
+          else if($("#ind_form input[id='ratalpha']").is(':checked')) {
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#ind_rat_alpha_form input").serializeArray())
+            data.push('INDUCTIONALPHA')
+
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_rat_alpha_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
+          }
+          // Mean expression
+          else if($("#ind_form input[id='meanexp']").is(':checked')) {
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#ind_mean_form input").serializeArray())
+            data.push('INDUCTIONMEAN')
+
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#ind_mean_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
+          }
+          // No function selected
+          else {
+            alert("You must select a function for the induction curve analysis")
+          }
+        }
+
+        // Heatmap
+        else if ($("#heatmap").is(':checked')) {
+          // Ratiometric rho
+          if($("#heat_form input[id='heat_ratrho']").is(':checked')) {
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#heat_rat_rho_form input").serializeArray())
+            data.push('HEATMAPRHO')
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#heat_rat_rho_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
+          }
+
+          // Ratiometric alpha
+          else if($("#heat_form input[id='heat_ratalpha']").is(':checked')) {
+
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#heat_rat_alpha_form input").serializeArray())
+            data.push('HEATMAPALPHA')
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#heat_rat_alpha_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
+          }
+
+          // Mean expression
+          else if($("#heat_form input[id='heat_meanexp']").is(':checked')) {
+            let data = []
+            data.push($("#vieneDeSearch input").serializeArray())
+            data.push($("#heat_mean_form input").serializeArray())
+            data.push('HEATMAPMEAN')
+            $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#heat_mean_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+              $( "#plot" ).empty().append( data2)
+              // Function that gives effects to tab element
+              var $tabButtonItem = $('#tab-button li'),
+                  $tabSelect = $('#tab-select'),
+                  $tabContents = $('.tab-contents'),
+                  activeClass = 'is-active';
+
+              $tabButtonItem.first().addClass(activeClass);
+              $tabContents.not(':first').hide();
+
+              $tabButtonItem.find('a').on('click', function(e) {
+                var target = $(this).attr('href');
+
+                $tabButtonItem.removeClass(activeClass);
+                $(this).parent().addClass(activeClass);
+                $tabSelect.val(target);
+                $tabContents.hide();
+                $(target).show();
+                e.preventDefault();
+              });
+              $tabSelect.on('change', function() {
+                var target = $(this).val(),
+                    targetSelectNum = $(this).prop('selectedIndex');
+
+                $tabButtonItem.removeClass(activeClass);
+                $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+                $tabContents.hide();
+                $(target).show();
+              });
+            });
+          }
+          // No function selected
+          else {
+            alert("You must select a function for the heatmap analysis")
+          }
+        }
+
+        // Kymograph
+        else if ($("#kym").is(':checked')) {
+
+          let data = []
+          data.push($("#vieneDeSearch input").serializeArray())
+          data.push($("#kym_form input").serializeArray())
+          data.push('KYMOGRAPH')
+          $.post('/monkey/make_analysis', {param1: data, csrfmiddlewaretoken: $("#vieneDeSearch input[name='csrfmiddlewaretoken']").val(), csrfmiddlewaretoken: $("#kym_form input[name='csrfmiddlewaretoken']").val()}, function(data2, textStatus, xhr) {
+            $( "#plot" ).empty().append( data2)
+            // Function that gives effects to tab element
+            var $tabButtonItem = $('#tab-button li'),
+                $tabSelect = $('#tab-select'),
+                $tabContents = $('.tab-contents'),
+                activeClass = 'is-active';
+
+            $tabButtonItem.first().addClass(activeClass);
+            $tabContents.not(':first').hide();
+
+            $tabButtonItem.find('a').on('click', function(e) {
+              var target = $(this).attr('href');
+
+              $tabButtonItem.removeClass(activeClass);
+              $(this).parent().addClass(activeClass);
+              $tabSelect.val(target);
+              $tabContents.hide();
+              $(target).show();
+              e.preventDefault();
+            });
+            $tabSelect.on('change', function() {
+              var target = $(this).val(),
+                  targetSelectNum = $(this).prop('selectedIndex');
+
+              $tabButtonItem.removeClass(activeClass);
+              $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+              $tabContents.hide();
+              $(target).show();
+            });
+          });
+        }
+        // No selection
+        else {
+          alert("You must select an analysis option")
+        }
+      })
+    </script>
+  </body>
+</html>
