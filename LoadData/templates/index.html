@@ -1,15 +1,8 @@
+{% extends 'base_new.html' %}
 {% load staticfiles %}
-<!doctype html>
-<html lang="es">
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+{% block header_content %}
   <link rel="stylesheet" href="{% static 'selection/styles.css' %}">
-
   <style media="screen">
   #tblData input.selected{
     border: 2px solid red;
@@ -17,195 +10,187 @@
   #tblData input{
     width: 110%;
   }
-
   </style>
+{% endblock %}
 
-  <title>Upload data</title>
-</head>
+{% block main_content %}
+  <div class="table-responsive" id="blkData">
 
-<body>
-  <div class="container">
-    <div class="table-responsive" id="blkData">
+    <nav aria-label="...">
+      Steps:
+      <ul class="pagination" id="steps">
+        <li class="page-item disabled"><a class="page-link bg-primary text-white" href="#" tabindex="-1">Strain</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#">Media</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#">DNA</a></li>
+      </ul>
+    </nav>
 
-      <nav aria-label="...">
-        Steps:
-        <ul class="pagination" id="steps">
-          <li class="page-item disabled"><a class="page-link bg-primary text-white" href="#" tabindex="-1">Strain</a></li>
-          <li class="page-item disabled"><a class="page-link" href="#">Media</a></li>
-          <li class="page-item disabled"><a class="page-link" href="#">DNA</a></li>
-        </ul>
-      </nav>
+    <input type="text" id="val-inp">
+    <button id='btn-val'>Assign value</button>
 
-      <input type="text" id="val-inp">
-      <button id='btn-val'>Assign value</button>
-
-      <main>
-        <section class="sec demo">
-          <section class="box-wrap boxes green">
-            <table class="table table-hover" id="tblData">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">1</th>
-                  <th scope="col">2</th>
-                  <th scope="col">3</th>
-                  <th scope="col">4</th>
-                  <th scope="col">5</th>
-                  <th scope="col">6</th>
-                  <th scope="col">7</th>
-                  <th scope="col">8</th>
-                  <th scope="col">9</th>
-                  <th scope="col">10</th>
-                  <th scope="col">11</th>
-                  <th scope="col">12</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">A</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-                <tr>
-                  <th scope="row">B</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-                <tr>
-                  <th scope="row">C</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-                <tr>
-                  <th scope="row">D</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-                <tr>
-                  <th scope="row">E</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-                <tr>
-                  <th scope="row">F</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-                <tr>
-                  <th scope="row">G</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-                <tr>
-                  <th scope="row">H</th>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                  <td><input /></td>
-                </tr>
-              </tbody>
-            </table>
-          </section>
+    <main>
+      <section class="sec demo">
+        <section class="box-wrap boxes green">
+          <table class="table table-hover" id="tblData">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">1</th>
+                <th scope="col">2</th>
+                <th scope="col">3</th>
+                <th scope="col">4</th>
+                <th scope="col">5</th>
+                <th scope="col">6</th>
+                <th scope="col">7</th>
+                <th scope="col">8</th>
+                <th scope="col">9</th>
+                <th scope="col">10</th>
+                <th scope="col">11</th>
+                <th scope="col">12</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">A</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+              <tr>
+                <th scope="row">B</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+              <tr>
+                <th scope="row">C</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+              <tr>
+                <th scope="row">D</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+              <tr>
+                <th scope="row">E</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+              <tr>
+                <th scope="row">F</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+              <tr>
+                <th scope="row">G</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+              <tr>
+                <th scope="row">H</th>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+                <td><input /></td>
+              </tr>
+            </tbody>
+          </table>
         </section>
-      </main>
+      </section>
+    </main>
 
-      <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Siguiente</button>
-
-    </div>
-
-    <div id="blkFile" class="d-none">
-      <form class="form" action="/monkey/sample" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="dataFile" value="Selecciona el archivo">
-        <input type="hidden" name="dataFull" value="">
-        <button id="btnSend" type="submit" name="btn" class="btn btn-success" data-action="steps">Subir Archivo</button>
-      </form>
-    </div>
+    <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Siguiente</button>
 
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <div id="blkFile" class="d-none">
+    <form class="form" action="/monkey/sample" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="dataFile" value="Selecciona el archivo">
+      <input type="hidden" name="dataFull" value="">
+      <button id="btnSend" type="submit" name="btn" class="btn btn-success" data-action="steps">Subir Archivo</button>
+    </form>
+  </div>
+{% endblock %}
 
+{% block footer_content %}
   <script src="{% static 'selection/selection.min.js' %}"></script>
   <script src="{% static 'selection/code.js' %}"></script>
 
@@ -292,5 +277,4 @@
 
   });
   </script>
-</body>
-</html>
+{% endblock %}
