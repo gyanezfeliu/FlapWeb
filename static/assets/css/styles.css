@@ -1,0 +1,17 @@
+header.masthead {
+  position: relative;
+  background-color: #343a40;
+  background-size: cover;
+  padding-top: 4rem;
+  padding-bottom: 0rem;
+  margin-top: 4rem;
+  background:url('../img/bg-masthead.jpg')no-repeat center center;
+}
+
+body {
+  background-color: rgb(248,249,250);
+}
+
+#main-content{
+  margin-top: 4rem;
+}
