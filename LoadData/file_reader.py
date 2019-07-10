@@ -152,6 +152,7 @@ class MonkeyReader():
         samps = MonkeyReader.get_samps(d_query)
 
         fig1 = plt.figure()
+        
         for s in samps:
             df = an.get_measurements(s)
             y = df[df['name']=='YFP']['value']
@@ -163,8 +164,20 @@ class MonkeyReader():
             plt.plot(y, c, '.')
         #plt.xlabel('RFP Expression (AU)')
         # Para isaac
-        plt.xlabel('CFP Expression (AU)', fontsize=17)
+        plt.xlabel('CFP Expression (AU)', fontsize=20)
         plt.ylabel('YFP Expression (AU)', fontsize=17)
+        
+        # OD
+        """
+        for s in samps:
+            df = an.get_measurements(s)
+            y = df[df['name']=='OD']['value']
+            t = df[df['name']=='OD']['time']
+
+            plt.plot(t, y, '.')
+        plt.xlabel('Time (hours)', fontsize=17)
+        plt.ylabel('OD', fontsize=17)
+        """
 
         fig2 = plt.figure()
         for s in samps:
@@ -172,7 +185,9 @@ class MonkeyReader():
             er = an.expression_rate(df=df, mname=d_query['mea_name'], skip=20)
             # er = an.expression_rate(df=df, mname='CFP', skip=20)
             plt.plot(er)
-        plt.ylabel("{} Expression rate".format(d_query['mea_name']), fontsize=20)
+        #plt.ylabel("{} Expression rate".format(d_query['mea_name']), fontsize=20)
+        plt.ylabel("Expression rate (AU)".format(d_query['mea_name']), fontsize=20)
+        #plt.ylabel("Growth rate (AU)".format(d_query['mea_name']), fontsize=20)
         plt.xlabel('Time (hours)', fontsize=20)
 
         return [fig_to_html(fig2), fig_to_html(fig1)];
@@ -238,9 +253,10 @@ class MonkeyReader():
             #concs_log[concs_log == -np.inf] = minim - dist
 
 
-        plt.plot(concs_log, my, '.')
-        plt.xlabel("log({} conc.) (M)".format(d_query['ind_name']))
-        plt.ylabel('Mean fluorescence (AU)')
+        plt.plot(concs_log, my, '.', ms=15)
+        plt.xlabel("log({} conc.) (M)".format(d_query['ind_name']), fontsize=25)
+        #plt.ylabel('Mean fluorescence (AU)', fontsize=20)
+        plt.ylabel('Fluorescence ratio', fontsize=20)
 
         #### CURVE FIT
         #z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
@@ -255,7 +271,9 @@ class MonkeyReader():
         n = z[3]
 
         #TUNING
-        x = np.linspace(np.nanmin(concs_log[concs_log != -np.inf]),np.max(concs_log),200)
+        #x = np.linspace(np.nanmin(concs_log[concs_log != -np.inf]),np.max(concs_log),200)
+        x = np.linspace(-0.5,np.max(concs_log),200)
+        
         #x = np.linspace(np.min(concs_log),np.max(concs_log),200)
         #x = np.linspace(-1.0,3.0,100)
         fig2 = plt.figure()
@@ -347,5 +365,8 @@ class MonkeyReader():
 
         fig = plt.figure()
         plt.pcolor(hm)
+        #plt.yticks(np.arange(80, 10, 10))
+        plt.ylabel('Time (AU)', fontsize=25)
+        plt.xlabel('IPTG (AU)', fontsize=25)
         plt.colorbar()
         return fig_to_html(fig);

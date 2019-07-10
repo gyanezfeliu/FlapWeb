@@ -3,6 +3,18 @@
 
 {% block header_content %}
 <title>Search</title>
+<link rel="stylesheet" href="{% static 'to_plot.css' %}">
+<style media="screen">
+  input[type=text]{
+    width: 100px;
+  }
+  .bg-light {
+    background-color: #91a6bb!important;
+  }
+  button {
+    width: 150px;
+  }
+</style>
 {% endblock %}
 
 {% block main_content %}
@@ -27,8 +39,7 @@
         <input type="text" name="ind_name"><br>
         Measurement name<br>
         <input type="text" name="mea_name" placeholder=""><br> -->
-
-        <button id="subPlot" type="button" name="button">Plot</button>
+        <button id="subPlot" type="button" name="button">Visualize</button>
         <button id="subAnalyse" type="submit" name="button">Analyse</button>
       </form>
     </div>

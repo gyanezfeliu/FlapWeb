@@ -5,10 +5,30 @@
   <link rel="stylesheet" href="{% static 'selection/styles.css' %}">
   <style media="screen">
   #tblData input.selected{
-    border: 2px solid red;
+    border: 2px solid rgb(61, 89, 212);
   }
   #tblData input{
     width: 110%;
+  }
+  #tblData{
+    text-align: center;
+  }
+  #tblData input{
+    text-align: center;
+  }
+  #btn-val {
+    width: 300px;
+  }
+  #btnNext {
+  position: absolute;
+  right: 50px;
+  width: 150px;
+  }
+  .bg-light {
+    background-color: #91a6bb!important;
+  }
+  #val-inp {
+    text-align: center;
   }
   </style>
 {% endblock %}
@@ -22,13 +42,14 @@
         <li class="page-item disabled"><a class="page-link bg-primary text-white" href="#" tabindex="-1">Strain</a></li>
         <li class="page-item disabled"><a class="page-link" href="#">Media</a></li>
         <li class="page-item disabled"><a class="page-link" href="#">DNA</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#">Inducer</a></li>
       </ul>
     </nav>
 
     <div>
       <input type="text" id="val-inp">
       <button id='btn-val'>Assign value</button>
-      <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Siguiente</button>
+      <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Download plot</button>
   </div>
 
     <main>
