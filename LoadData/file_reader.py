@@ -186,8 +186,9 @@ class MonkeyReader():
             # er = an.expression_rate(df=df, mname='CFP', skip=20)
             plt.plot(er)
         #plt.ylabel("{} Expression rate".format(d_query['mea_name']), fontsize=20)
-        plt.ylabel("Expression rate (AU)".format(d_query['mea_name']), fontsize=20)
+        #plt.ylabel("Expression rate (AU)".format(d_query['mea_name']), fontsize=20)
         #plt.ylabel("Growth rate (AU)".format(d_query['mea_name']), fontsize=20)
+        plt.ylabel("GFP Expression (AU)".format(d_query['mea_name']), fontsize=20)        
         plt.xlabel('Time (hours)', fontsize=20)
 
         return [fig_to_html(fig2), fig_to_html(fig1)];

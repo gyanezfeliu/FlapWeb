@@ -3,6 +3,7 @@
 
 {% block header_content %}
   <link rel="stylesheet" href="{% static 'selection/styles.css' %}">
+  <title>Upload - Flapjack</title>
   <style media="screen">
   #tblData input.selected{
     border: 2px solid rgb(61, 89, 212);
@@ -49,7 +50,7 @@
     <div>
       <input type="text" id="val-inp">
       <button id='btn-val'>Assign value</button>
-      <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Download plot</button>
+      <button id="btnNext" type="button" name="btn" class="btn btn-success" data-action="steps">Next</button>
   </div>
 
     <main>
@@ -209,7 +210,7 @@
       {% csrf_token %}
       <input type="file" name="dataFile" value="Selecciona el archivo">
       <input type="hidden" name="dataFull" value="">
-      <button id="btnSend" type="submit" name="btn" class="btn btn-success" data-action="steps">Subir Archivo</button>
+      <button id="btnSend" type="submit" name="btn" class="btn btn-success" data-action="steps">Upload raw data</button>
     </form>
   </div>
 {% endblock %}
