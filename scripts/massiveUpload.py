@@ -166,9 +166,9 @@ def load_synergy_data(medidas, ws):
     # Para Maca
     #name_map = {'OD600:600':'OD', 'RFP-YFP:500/27,540/25':'YFP', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP', 'RFP-YFP:585/10,620/15':'RFP'}
     # Para Isaac
-    #name_map = {'OD600:600':'OD', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP'}
+    name_map = {'OD600:600':'OD', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP'}
     # Cell Free
-    name_map = {'RFP 80:585/10,620/15': 'RFP', 'GFP55:485/20,516/20': 'GFP2', 'GFP55:485/20,516/20[2]': 'GFP'}
+    #name_map = {'RFP 80:585/10,620/15': 'RFP', 'GFP55:485/20,516/20': 'GFP2', 'GFP55:485/20,516/20[2]': 'GFP'}
     names = [name_map[rows_ini[i][0]] for i in range(len(rows_ini)-1)]
 
     df_cons = clean_synergy_data(names, df, rows)
@@ -267,8 +267,10 @@ columns = [x+str(y) for x in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] for y in r
 # Para Maca
 #medidas = ['OD600:600', 'RFP-YFP:585/10,620/15', 'RFP-YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
 # Para Isaac
-#medidas = ['OD600:600', 'YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
+medidas = ['OD600:600', 'YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
 # Para Cell Free
-medidas = ['RFP 80:585/10,620/15', 'GFP55:485/20,516/20', 'GFP55:485/20,516/20[2]', 'Results']
-load_from_file('uploads/datafiles/bmg/to_upload/', 'bmg', columns, medidas)
+#medidas = ['RFP 80:585/10,620/15', 'GFP55:485/20,516/20', 'GFP55:485/20,516/20[2]', 'Results']
+
+###### CHEQUEAR SI HAY ARCHIVOS EN LAS CARPETAS BMG o SYNERGY #########
+#load_from_file('uploads/datafiles/bmg/to_upload/', 'bmg', columns, medidas)
 load_from_file('uploads/datafiles/synergy/to_upload/', 'synergy', columns, medidas)

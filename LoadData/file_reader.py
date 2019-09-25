@@ -157,7 +157,7 @@ class MonkeyReader():
             df = an.get_measurements(s)
             y = df[df['name']=='YFP']['value']
             c = df[df['name']=='CFP']['value']
-            # Para isaac
+            # Para isaac sacar r
             #r = df[df['name']=='RFP']['value']
 
             # By default it plots YFP vs RFP, should be able to change it interactively
@@ -262,8 +262,7 @@ class MonkeyReader():
         #### CURVE FIT
         #z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
         # Para Isaac
-        print(concs)
-        z,_= curve_fit(an.hill, concs, my)#, bounds=([0,0,0,1],[1,1,1e-2,2]))
+        z,_= curve_fit(an.hill, concs, my)
 
         
         a = z[0]
@@ -272,8 +271,8 @@ class MonkeyReader():
         n = z[3]
 
         #TUNING
-        #x = np.linspace(np.nanmin(concs_log[concs_log != -np.inf]),np.max(concs_log),200)
-        x = np.linspace(-0.5,np.max(concs_log),200)
+        x = np.linspace(np.nanmin(concs_log[concs_log != -np.inf]),np.max(concs_log),200)
+        #x = np.linspace(-0.5,np.max(concs_log),200)
         
         #x = np.linspace(np.min(concs_log),np.max(concs_log),200)
         #x = np.linspace(-1.0,3.0,100)

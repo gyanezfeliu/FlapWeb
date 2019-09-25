@@ -68,27 +68,38 @@ def run(*args):
 
     df = df.drop('T° OD600:600', axis=1)
 
+    ##############################################################
+    ## MAKE A VERIFICATION OF THE SIGNALS PRESENT IN THE DATASET!!
+    ##############################################################
+
+    # TODA ESTA PARTE ESTÁ HARCODEADA, HACER DINÁMICA
+    ###################################################
+
     df_OD = pd.DataFrame(df.iloc[0:lista_rows2[0][1] - 3])
     df_OD['name'] = 'OD'
     fix_synergy_time(df_OD)
-    df_OD.index = range(97)
+    df_OD.index = range(len(df_OD['name']))
 
-    df_RFP = pd.DataFrame(df.iloc[lista_rows2[0][1] + 1:lista_rows2[1][1] - 3])
-    df_RFP['name'] = 'RFP'
-    fix_synergy_time(df_RFP)
-    df_RFP.index = range(97)
+    # df_RFP = pd.DataFrame(df.iloc[lista_rows2[0][1] + 1:lista_rows2[1][1] - 3])
+    # df_RFP['name'] = 'RFP'
+    # fix_synergy_time(df_RFP)
+    # df_RFP.index = range(len(df_RFP['name']))
+
+    df_CFP = pd.DataFrame(df.iloc[lista_rows2[0][1] + 1:lista_rows2[1][1] - 3])
+    df_CFP['name'] = 'CFP'
+    fix_synergy_time(df_CFP)
+    df_CFP.index = range(len(df_CFP['name']))
 
     df_YFP = pd.DataFrame(df.iloc[lista_rows2[1][1] + 1:lista_rows2[2][1] - 3])
     df_YFP['name'] = 'YFP'
     fix_synergy_time(df_YFP)
-    df_YFP.index = range(97)
+    df_YFP.index = range(len(df_YFP['name']))
 
-    df_CFP = pd.DataFrame(df.iloc[lista_rows2[2][1] + 1:lista_rows2[3][1] - 3])
-    df_CFP['name'] = 'CFP'
-    fix_synergy_time(df_CFP)
-    df_CFP.index = range(97)
 
-    dfs = [df_OD, df_RFP, df_YFP, df_CFP]
+    # dfs = [df_OD, df_RFP, df_YFP, df_CFP]
+    dfs = [df_OD, df_YFP, df_CFP]
+
+###################################################
 
     # 1) Experiment
     e = Experiment(name=experiment_name, machine=machine_name)
