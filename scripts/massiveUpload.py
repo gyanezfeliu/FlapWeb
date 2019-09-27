@@ -164,11 +164,15 @@ def load_synergy_data(medidas, ws):
     #df = df.drop('T° OD600:600', axis=1)
     
     # Para Maca
-    #name_map = {'OD600:600':'OD', 'RFP-YFP:500/27,540/25':'YFP', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP', 'RFP-YFP:585/10,620/15':'RFP'}
+    #name_map = {'OD600:600':'OD', 'RFP-YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP', 'RFP-YFP:585/10,620/15':'RFP'}
     # Para Isaac
-    name_map = {'OD600:600':'OD', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP'}
+    #name_map = {'OD600:600':'OD', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP'}
     # Cell Free
     #name_map = {'RFP 80:585/10,620/15': 'RFP', 'GFP55:485/20,516/20': 'GFP2', 'GFP55:485/20,516/20[2]': 'GFP'}
+
+    # Para todos
+    name_map = {'OD600:600':'OD', 'RFP-YFP:500/27,540/25':'YFP', 'YFP:500/27,540/25':'YFP', 'CFP:420/50,485/20':'CFP', 'RFP-YFP:585/10,620/15':'RFP', 'GFP:485/20,516/20':'GFP', 'mCherry2:585/10,620/15':'mCherry'}
+
     names = [name_map[rows_ini[i][0]] for i in range(len(rows_ini)-1)]
 
     df_cons = clean_synergy_data(names, df, rows)
@@ -237,16 +241,39 @@ def upload_data(e, dict_meta, df_cons, columns):
             m = Measurement(sample=s, name=m_name, value=m_value, time=m_time)
             m.save()
 
-def load_from_file(route, file_format, columns, medidas):
-    files = os.listdir(route)
+def get_signal_names(path, file_name):
+    # Workbook
+    wb = opxl.load_workbook(filename = path+file_name, data_only=True)
+    # Sheet
+    ws = wb['Data']
+    # First column as Cell objects
+    first_col = ws['A']
+    # First column as values
+    first_col_arr = np.array([c.value for c in first_col])
+    # Index where signals information starts
+    start_index = np.where(first_col_arr=='End Kinetic')[0][0]
+
+    # Obtain signals names
+    medidas = []
+    for i, val in enumerate(first_col_arr):
+        if i <= start_index:
+            pass
+        else:
+            if val != None:
+                medidas.append(val)
+    return medidas
+
+def load_from_file(path, file_format, columns):
+    files = os.listdir(path)
     for file_name in files:
         if '.xlsx' in file_name:
-            wb = opxl.load_workbook(filename = route + file_name, data_only=True)
+            wb = opxl.load_workbook(filename = path + file_name, data_only=True)
             ws = wb['Data']
             existing_exp = [i.name for i in Experiment.objects.all()]
 
             experiment_name = os.path.basename(file_name).split('/')[-1].split('.')[0]
             if experiment_name not in existing_exp:
+                medidas = get_signal_names(path, file_name)
                 if file_format == 'bmg':
                     machine_name = 'bmg'
                     df_cons = load_bmg_data(ws, columns)
@@ -265,12 +292,12 @@ def load_from_file(route, file_format, columns, medidas):
 
 columns = [x+str(y) for x in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] for y in range(1,13)]
 # Para Maca
-#medidas = ['OD600:600', 'RFP-YFP:585/10,620/15', 'RFP-YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
+medidas = ['OD600:600', 'RFP-YFP:585/10,620/15', 'RFP-YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
 # Para Isaac
-medidas = ['OD600:600', 'YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
+#medidas = ['OD600:600', 'YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
 # Para Cell Free
 #medidas = ['RFP 80:585/10,620/15', 'GFP55:485/20,516/20', 'GFP55:485/20,516/20[2]', 'Results']
 
 ###### CHEQUEAR SI HAY ARCHIVOS EN LAS CARPETAS BMG o SYNERGY #########
 #load_from_file('uploads/datafiles/bmg/to_upload/', 'bmg', columns, medidas)
-load_from_file('uploads/datafiles/synergy/to_upload/', 'synergy', columns, medidas)
+load_from_file('uploads/datafiles/synergy/to_upload/', 'synergy', columns)

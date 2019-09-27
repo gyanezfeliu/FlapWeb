@@ -38,9 +38,9 @@ def run(*args):
     df_json.index = ['Strain', 'Media', 'DNA']
 
     experiment_name = os.path.basename(file_route).split('/')[-1].split('.')[0]
-    #medidas = ['OD600:600', 'RFP-YFP:585/10,620/15', 'RFP-YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
+    medidas = ['OD600:600', 'RFP-YFP:585/10,620/15', 'RFP-YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
     # Para Isaac
-    medidas = ['OD600:600', 'YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
+    #medidas = ['OD600:600', 'YFP:500/27,540/25', 'CFP:420/50,485/20', 'Results']
 
     wb = opxl.load_workbook(filename = file_route, data_only=True)
     ws = wb['Data']
@@ -80,10 +80,14 @@ def run(*args):
     fix_synergy_time(df_OD)
     df_OD.index = range(len(df_OD['name']))
 
-    # df_RFP = pd.DataFrame(df.iloc[lista_rows2[0][1] + 1:lista_rows2[1][1] - 3])
-    # df_RFP['name'] = 'RFP'
-    # fix_synergy_time(df_RFP)
-    # df_RFP.index = range(len(df_RFP['name']))
+
+    # Para Maca
+    df_RFP = pd.DataFrame(df.iloc[lista_rows2[0][1] + 1:lista_rows2[1][1] - 3])
+    df_RFP['name'] = 'RFP'
+    fix_synergy_time(df_RFP)
+    df_RFP.index = range(len(df_RFP['name']))
+
+    # Para Isaac comentar la parte anterior
 
     df_CFP = pd.DataFrame(df.iloc[lista_rows2[0][1] + 1:lista_rows2[1][1] - 3])
     df_CFP['name'] = 'CFP'
@@ -95,9 +99,11 @@ def run(*args):
     fix_synergy_time(df_YFP)
     df_YFP.index = range(len(df_YFP['name']))
 
-
-    # dfs = [df_OD, df_RFP, df_YFP, df_CFP]
-    dfs = [df_OD, df_YFP, df_CFP]
+    # Para Maca
+    dfs = [df_OD, df_RFP, df_YFP, df_CFP]
+    
+    # Para Isaac
+    # dfs = [df_OD, df_YFP, df_CFP]
 
 ###################################################
 

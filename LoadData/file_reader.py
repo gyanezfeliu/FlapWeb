@@ -157,6 +157,7 @@ class MonkeyReader():
             df = an.get_measurements(s)
             y = df[df['name']=='YFP']['value']
             c = df[df['name']=='CFP']['value']
+            
             # Para isaac sacar r
             #r = df[df['name']=='RFP']['value']
 
@@ -260,6 +261,8 @@ class MonkeyReader():
         plt.ylabel('Fluorescence ratio', fontsize=20)
 
         #### CURVE FIT
+        
+        # Para Maca?
         #z,_= curve_fit(an.hill, concs, my, bounds=([0,0,0,1],[1,1,1e-2,2]))
         # Para Isaac
         z,_= curve_fit(an.hill, concs, my)
